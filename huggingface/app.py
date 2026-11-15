@@ -17,4 +17,12 @@ with urllib.request.urlopen('https://github.com/ikat5/GeoNexus/archive/refs/head
 os.chdir(APP)
 subprocess.check_call([sys.executable, 'scripts/fetch_dataset_hf.py'])
 os.environ['PORT'] = '7860'
-os.execv(sys.executable, [sys.executable, 'serve.py'])
+try:  # free accounts only get ZeroGPU hardware, which stops a Space that declares no @spaces.GPU function
+    import spaces
+
+    @spaces.GPU
+    def _gpu_noop():  # never called: the app is CPU-only
+        return None
+except ImportError:
+    pass
+sys.exit(subprocess.call([sys.executable, 'serve.py']))

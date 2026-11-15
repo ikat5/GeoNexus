@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rover Sim</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <script>window.CESIUM_BASE_URL = 'https://cdn.jsdelivr.net/npm/cesium@1.140.0/Build/Cesium/';</script>
+  <script src="https://cdn.jsdelivr.net/npm/cesium@1.140.0/Build/Cesium/Cesium.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.140.0/Build/Cesium/Widgets/widgets.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header class="simbar">
+    <a class="logo" href="/" aria-label="Rover Sim home"><span class="mark" aria-hidden="true"></span>Rover Sim</a>
+    <nav class="tabs" aria-label="Simulator steps">
+      <a data-link data-tab="explore" href="/sim"><b>1</b>Explore</a>
+      <a data-link data-tab="result" href="/sim/result"><b>2</b>Model result</a>
+      <a data-link data-tab="drive" href="/sim/drive"><b>3</b>Live drive</a>
+      <a data-link data-tab="sensors" href="/sim/sensors"><b>4</b>Sensors</a>
+    </nav>
+    <div class="switch" role="group" aria-label="Target world">
+      <button data-body="mars"><i class="dot mars" aria-hidden="true"></i>Mars</button>
+      <button data-body="moon"><i class="dot moon" aria-hidden="true"></i>Moon</button>
+    </div>
+  </header>
+
+  <main class="sim">
+    <div class="head" data-pages="explore">
+      <div>
+        <p class="eyebrow">Step 1 of 4 · Explore</p>
+        <h1>Find Earth’s twin for a place on <em class="w-name">Mars</em></h1>
+        <p class="lede">Both worlds keep turning until you choose. Click a spot on <span class="w-name">Mars</span>; the terrain model finds the most similar place on Earth.</p>
+      </div>
+    </div>
+
+    <div class="head" data-pages="result" id="result-head"></div>
+
+    <div class="head" data-pages="drive">
+      <div>
+        <p class="eyebrow">Step 3 of 4 · Live drive</p>
+        <h1>Two rovers, <em>one terrain</em></h1>
+        <p class="lede" id="drive-sub"></p>
+      </div>
+      <div class="head-actions">
+        <div class="badge">Overall similarity<b class="live-score">—</b></div>
+        <button class="btn primary" id="pause" aria-pressed="false">Pause drive</button>
+      </div>
+    </div>
+
+    <div class="head" data-pages="sensors">
+      <div>
+        <p class="eyebrow">Step 4 of 4 · Sensors</p>
+        <h1>Measured <i>vs</i> <em class="score-ink">inferred</em></h1>
+        <p class="lede">Each rover measures its surroundings, and also infers them from its own motion. Where the lines agree, the rover understands its terrain.</p>
+      </div>
+      <div class="toggle" role="group" aria-label="Which rover">
+        <button data-rover="target" aria-pressed="true"><i class="dot target" aria-hidden="true"></i><span class="w-name">Mars</span> rover</button>
+        <button data-rover="earth" aria-pressed="false"><i class="dot earth" aria-hidden="true"></i>Earth rover</button>
+      </div>
+    </div>
+
+    <section class="stage" data-pages="explore drive" aria-label="Globes">
+      <article class="card world">
+        <header><h2><i class="dot target" aria-hidden="true"></i><span id="t-title"></span></h2><span class="state" id="t-state"></span></header>
+        <div id="target-pane" class="pane"></div>
+        <dl id="target-stats" class="stats"></dl>
+      </article>
+      <article class="card world">
+        <header><h2><i class="dot earth" aria-hidden="true"></i><span id="e-title"></span></h2><span class="state" id="e-state"></span></header>
+        <div id="earth-pane" class="pane"></div>
+        <dl id="earth-stats" class="stats"></dl>
+      </article>
+    </section>
+
+    <section class="card summary" id="summary" data-pages="explore" aria-live="polite"></section>
+
+    <section class="card" data-pages="drive">
+      <header class="cardhead"><h2>Earth vs <span class="w-name">Mars</span>, last 60 seconds</h2>
+        <div class="legend"><i class="line earth"></i>Earth <i class="line target"></i><span class="w-name">Mars</span></div></header>
+      <div id="dock-charts" class="charts four"></div>
+      <p class="note">What the two rovers actually measure while driving: relief roughness, slope spread, air density (log scale) and temperature.</p>
+    </section>
+
+    <section id="result" data-pages="result"></section>
+
+    <section class="card" data-pages="sensors">
+      <header class="cardhead"><h2 id="sensor-title"></h2>
+        <div class="legend"><i class="line measured"></i>measured <i class="line inferred"></i>inferred from its own motion</div></header>
+      <div id="target-charts" class="charts two"></div>
+      <div id="earth-charts" class="charts two" hidden></div>
+    </section>
+
+    <section class="card summary" id="empty" hidden></section>
+
+    <nav class="pager" aria-label="Previous and next step">
+      <a class="btn ghost" id="prev" data-link href="/sim"></a>
+      <span></span>
+      <a class="btn ghost" id="next" data-link href="/sim/result"></a>
+      <button class="btn ghost" id="newsite" data-act="reset" hidden>Pick a new site</button>
+    </nav>
+  </main>
+
+  <footer class="foot">
+    <span>Rover Sim</span>
+    <span>Globes rendered with CesiumJS · Imagery: Esri World Imagery, NASA Trek · Terrain: AWS Terrain Tiles, NASA LOLA and MOLA · Matching: TerraTwin 0.2.0</span>
+  </footer>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# Render Blueprint: one Python web service. The model API holds ~1.1 GB in RAM, so it needs the 2 GB "standard" plan;
+# on "free"/"starter" (512 MB) it will be killed for memory. Set DATASET_TOKEN in the dashboard (never in this file).
+services:
+  - type: web
+    name: geonexus
+    runtime: python
+    plan: standard
+    buildCommand: bash scripts/render_build.sh
+    startCommand: python serve.py
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.14.4
+      - key: DATASET_TOKEN
+        sync: false

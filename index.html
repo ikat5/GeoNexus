@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rover Sim · Every crater has a twin on Earth</title>
+  <meta name="description" content="Pick a place on Mars or the Moon. A terrain model finds the most similar place on Earth, and a rover drives both.">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+  <header class="wrap nav">
+    <a class="logo" href="/" aria-label="Rover Sim home"><span class="mark" aria-hidden="true"></span>Rover Sim</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#readouts">Readouts</a></li>
+        <li><a href="#worlds">Worlds</a></li>
+        <li><a class="btn primary" href="/sim">Launch simulator</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <p class="pill"><i class="dot mars" aria-hidden="true"></i>Mars · Moon · Earth, side by side</p>
+        <h1>Every crater has a <em>twin</em> on Earth.</h1>
+        <p class="lede">Click anywhere on Mars or the Moon. A terrain model reads the ground (elevation, slope, the feel of the land) and finds the place on Earth that is most alike. Then a rover drives both, side by side.</p>
+        <div class="cta">
+          <a class="btn primary" href="/sim">Start exploring →</a>
+          <a class="btn ghost" href="#how">See how it works</a>
+        </div>
+        <p class="pill legend"><span><i class="dot earth" aria-hidden="true"></i>Earth</span><span><i class="dot mars" aria-hidden="true"></i>Mars</span><span>The two worlds the rovers compare</span></p>
+      </div>
+
+      <!-- decorative solar system: pure CSS, no images. --r orbit radius, --t period, --d phase, --s planet size -->
+      <div class="solar" aria-hidden="true">
+        <div class="scene"><div class="plane">
+          <div class="orbit" style="--r:78px"></div>
+          <div class="orbit" style="--r:112px"></div>
+          <div class="orbit earth" style="--r:150px"></div>
+          <div class="orbit mars" style="--r:190px"></div>
+          <div class="orbit" style="--r:262px"></div>
+          <div class="orbit" style="--r:336px"></div>
+          <div class="orbit" style="--r:408px"></div>
+          <div class="orbit" style="--r:476px"></div>
+          <div class="sun"></div>
+          <div class="arm" style="--r:78px;--t:9s;--d:-2s"><div class="body"><span class="planet mercury" style="--s:7px"></span></div></div>
+          <div class="arm" style="--r:112px;--t:15s;--d:-11s"><div class="body"><span class="planet venus" style="--s:11px"></span></div></div>
+          <div class="arm" style="--r:150px;--t:24s;--d:-19s"><div class="body" style="--s:14px"><span class="planet earthp" style="--s:14px"></span><span class="tag" style="color:#4FB3FF">Earth</span></div></div>
+          <div class="arm" style="--r:190px;--t:38s;--d:-33s"><div class="body" style="--s:11px"><span class="planet marsp" style="--s:11px"></span><span class="tag" style="color:#FF7A45">Mars</span></div></div>
+          <div class="arm" style="--r:262px;--t:78s;--d:-66s"><div class="body"><span class="planet jupiter" style="--s:38px"></span></div></div>
+          <div class="arm" style="--r:336px;--t:120s;--d:-104s"><div class="body"><span class="planet saturn" style="--s:30px"></span></div></div>
+          <div class="arm" style="--r:408px;--t:170s;--d:-150s"><div class="body"><span class="planet uranus" style="--s:20px"></span></div></div>
+          <div class="arm" style="--r:476px;--t:230s;--d:-207s"><div class="body"><span class="planet neptune" style="--s:19px"></span></div></div>
+        </div></div>
+      </div>
+    </section>
+
+    <section class="gravity" aria-label="Surface gravity">
+      <div class="wrap">
+        <h2>Same rover. <em>Three gravities.</em></h2>
+        <div class="g"><i class="dot earth" aria-hidden="true"></i><div><small>Earth</small><b><span data-g="earth" style="font-size:inherit;color:inherit;margin:0">9.81</span><span>m/s²</span></b></div></div>
+        <div class="g"><i class="dot mars" aria-hidden="true"></i><div><small>Mars</small><b><span data-g="mars" style="font-size:inherit;color:inherit;margin:0">3.72</span><span>m/s²</span></b></div></div>
+        <div class="g"><i class="dot moon" aria-hidden="true"></i><div><small>Moon</small><b><span data-g="moon" style="font-size:inherit;color:inherit;margin:0">1.62</span><span>m/s²</span></b></div></div>
+      </div>
+    </section>
+
+    <section class="wrap block" id="how">
+      <p class="eyebrow" style="color:var(--mars)">How it works</p>
+      <h2 class="serif">From one click to two rovers on the move.</h2>
+      <div class="grid3">
+        <article class="card step">
+          <header><span class="ic o"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span>01</span></header>
+          <h3>Pick a site</h3>
+          <p>Mars or the Moon turns slowly on its axis. Click any spot and it stops, pinned where you chose.</p>
+        </article>
+        <article class="card step">
+          <header><span class="ic b"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.800 0 18M12 3c-3 3.2-3 14.800 0 18"/></svg></span><span>02</span></header>
+          <h3>Meet its Earth twin</h3>
+          <p>The terrain model takes your site’s features and hands back the closest match on Earth, with a side-by-side comparison.</p>
+        </article>
+        <article class="card step">
+          <header><span class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="9" width="16" height="7" rx="2"/><path d="M8 9V6h8v3"/><circle cx="8" cy="18" r="1.800"/><circle cx="16" cy="18" r="1.800"/></svg></span><span>03</span></header>
+          <h3>Drive both</h3>
+          <p>A rover sets off at each site. Gravity, slope and thin or thick air change how it moves.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap block split" id="readouts">
+      <div>
+        <p class="eyebrow" style="color:var(--mars)">Readouts</p>
+        <h2 class="serif">Read the ground like a mission team.</h2>
+        <p class="lede">Every site gets the same five readings, so a crater floor on Mars and a high desert on Earth can be compared at a glance.</p>
+      </div>
+      <dl class="readouts">
+        <div class="card"><dt>Speed</dt><dd>How fast the rover rolls under local gravity.</dd></div>
+        <div class="card"><dt>Elevation</dt><dd>Height of the site above the planet’s reference surface.</dd></div>
+        <div class="card"><dt>Slope</dt><dd>How steep the ground is under the wheels.</dd></div>
+        <div class="card"><dt>Air density</dt><dd>Thin Martian air, no air on the Moon, thick air at home.</dd></div>
+        <div class="card"><dt>Temperature</dt><dd>Surface temperature in kelvin, measured and inferred by the rover.</dd></div>
+      </dl>
+    </section>
+
+    <section class="wrap block" id="worlds">
+      <p class="eyebrow" style="color:var(--mars)">Worlds</p>
+      <h2 class="serif">Choose where to land.</h2>
+      <div class="worlds">
+        <a class="card world-card mars" href="/sim">
+          <span class="ball mars" aria-hidden="true"></span>
+          <div><h3>Mars</h3><p>Dust plains, canyons and ice caps. Find the deserts and volcanic fields on Earth that echo them.</p><span class="go">Explore Mars →</span></div>
+        </a>
+        <a class="card world-card" href="/sim?world=moon">
+          <span class="ball moon" aria-hidden="true"></span>
+          <div><h3>The Moon</h3><p>Dark maria and bright crater rims. See which places on Earth come closest.</p><span class="go">Explore the Moon →</span></div>
+        </a>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="card band">
+        <h2>Pick a spot. <em>Meet its twin.</em></h2>
+        <p>The globes are already turning. All it takes is one click.</p>
+        <a class="btn primary" href="/sim">Launch the simulator →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap site-foot">
+    <span>Rover Sim</span>
+    <span>Globes in the simulator are rendered with CesiumJS · <a href="https://cesium.com/platform/cesiumjs/" rel="noopener">Cesium</a> · Imagery: Esri World Imagery, NASA Trek · Terrain: AWS Terrain Tiles, NASA LOLA and MOLA · Matching: TerraTwin dataset</span>
+  </footer>
+
+  <script type="module">
+    // gravity strip: the same constants the simulator's physics uses
+    import { WORLDS } from '/js/physics.js';
+    document.querySelectorAll('[data-g]').forEach((el) => { el.textContent = WORLDS[el.dataset.g].g.toFixed(2); });
+  </script>
+</body>
+</html>

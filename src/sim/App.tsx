@@ -149,7 +149,8 @@ function PhoneDeck() {
   const [snap, setSnap] = useState<number | string | null>(SNAPS[1]);
   const mine = <Panel><Readouts pane={target} world={s.body} layout="grid" /></Panel>;
   return (
-    <main id="deck" className="deck deck-phone">
+    // the globe ends where the sheet begins, so the chase camera keeps the rover in view (capped: always some globe)
+    <main id="deck" className="deck deck-phone" style={{ '--sheet': `${Math.min(0.6, typeof snap === 'number' ? snap : SNAPS[1]) * 100}svh` } as React.CSSProperties}>
       <Stage mode="phone" />
       <Drawer.Root open modal={false} dismissible={false} snapPoints={SNAPS} activeSnapPoint={snap} setActiveSnapPoint={setSnap}>
         <Drawer.Portal>

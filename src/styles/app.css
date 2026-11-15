@@ -103,7 +103,7 @@ kbd { display: inline-flex; align-items: center; gap: 2px; padding: 1px 6px; bor
 .btn.quiet { color: var(--muted-ink); padding: 0 10px; }
 .btn.warn { background: rgba(255, 194, 77, .14); border-color: rgba(255, 194, 77, .5); color: var(--warn); }
 .btn.sm { min-height: 40px; padding: 0 14px; font-size: 13.5px; }
-.btn.wide { width: 100%; margin-top: 14px; }
+.btn.wide { width: 100%; margin-top: 14px; white-space: normal; text-align: center; line-height: 1.25; padding-block: 10px; }
 @media (hover: hover) {
   .btn.primary:hover { box-shadow: 0 0 24px -4px var(--target), inset 0 1px 0 rgba(255, 255, 255, .35); }
   .btn.ghost:hover { border-color: rgba(255, 255, 255, .34); background: rgba(255, 255, 255, .06); }
@@ -175,7 +175,10 @@ kbd { display: inline-flex; align-items: center; gap: 2px; padding: 1px 6px; bor
 .deck-drive { grid-template-columns: minmax(0, 1fr) minmax(300px, 350px); }
 .deck-sensors { grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); }
 .deck-empty { place-items: center; }
-.rail { display: flex; flex-direction: column; gap: 12px; min-height: 0; overflow-y: auto; scrollbar-width: thin; }
+.rail { display: flex; flex-direction: column; gap: 12px; min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: thin; }
+/* place names come from OpenStreetMap and can be one unbroken word: wrap anywhere, and clamp the big ones */
+.panel, .tr-pair, .result-head h1 { overflow-wrap: anywhere; }
+.ts-name, .site-name, .result-head h1 em { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
 .center { min-width: 0; min-height: 0; overflow-y: auto; scrollbar-width: thin; }
 .drive-center { display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 12px; overflow: hidden; }
 /* ≥1440: the explore rails float over the globe as glass */
@@ -469,7 +472,7 @@ kbd { display: inline-flex; align-items: center; gap: 2px; padding: 1px 6px; bor
 .console[data-phone] .cmd-btn { width: 44px; padding: 0; justify-content: center; }
 .console[data-phone] .seg [data-slot='toggle-group-item'] { padding: 0 12px; }
 .deck-phone { padding: 0; }
-.stage-phone { position: absolute; inset: 0; display: block; }
+.stage-phone { position: absolute; inset: 0 0 calc(var(--sheet, 50svh) - 6svh) 0; display: block; } /* resized in one step: no layout animation while the rovers drive */
 .stage-phone .globe-frame { position: absolute; inset: 0; border-radius: 0; border: 0; }
 .stage-phone .globe-frame.inset { inset: 56px 12px auto auto; width: 34vw; height: 34vw; border-radius: 50%; border: 1px solid rgba(70, 194, 242, .5); box-shadow: 0 0 24px rgba(70, 194, 242, .2); }
 .stage-phone .inset .hud-top, .stage-phone .inset .chip, .stage-phone .inset .brk, .stage-phone .inset .cesium-widget-credits { display: none !important; }

@@ -9,7 +9,9 @@ from huggingface_hub import snapshot_download
 
 ROOT = Path(__file__).resolve().parents[1]
 dest = ROOT / 'vendor' / 'mars_moon_earth_dataset'
-snapshot_download(os.environ.get('DATA_REPO', 'ikat5/geonexus-data'), repo_type='dataset', local_dir=dest)
+token = os.environ.get('HF_TOKEN', '').strip() or None  # pasted secrets often carry a stray space or newline
+print(f"HF_TOKEN: {'missing' if not token else f'{len(token)} chars, starts {token[:3]!r}'}")  # never the token itself
+snapshot_download(os.environ.get('DATA_REPO', 'ikat5/geonexus-data'), repo_type='dataset', local_dir=dest, token=token)
 (ROOT / '.cache').mkdir(exist_ok=True)
 shutil.copy(dest / 'cache' / 'earth_descriptors.npz', ROOT / '.cache' / 'earth_descriptors.npz')  # pre-computed: fast first queries
 print('dataset ready')

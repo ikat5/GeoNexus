@@ -23,6 +23,9 @@ try:  # free accounts only get ZeroGPU hardware, which stops a Space that declar
     @spaces.GPU
     def _gpu_noop():  # never called: the app is CPU-only
         return None
-except ImportError:
-    pass
+
+    from spaces.zero.lifecycle import zerogpu_startup
+    zerogpu_startup()  # the "startup report" Gradio's server would send; we don't run Gradio
+except Exception as e:  # not on ZeroGPU (or spaces internals changed): the server still starts
+    print('ZeroGPU startup skipped:', repr(e))
 sys.exit(subprocess.call([sys.executable, 'serve.py']))

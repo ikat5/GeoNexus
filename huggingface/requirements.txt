@@ -3,3 +3,4 @@ duckdb>=1.1
 pillow>=10.0
 rasterio>=1.4
 huggingface_hub
+spaces==0.52.0

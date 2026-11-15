@@ -1,0 +1,169 @@
+/* Landing page. Tokens, glass, buttons and type come from app.css. Section rhythm: one value at every seam. */
+:root { --rhythm: clamp(80px, 11vw, 150px); }
+body { overflow-x: hidden; }
+.wrap { max-width: 1240px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 48px); }
+.block { padding-block: var(--rhythm) 0; }
+section[id] { scroll-margin-top: 24px; }
+.site-nav { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.site-nav nav { display: flex; align-items: center; gap: 4px; }
+.site-nav nav a:not(.btn) { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; color: var(--muted-ink); font-size: 14.5px; border-radius: 999px; transition: color var(--d-ui) var(--ease-out), background-color var(--d-ui) var(--ease-out); }
+@media (hover: hover) { .site-nav nav a:not(.btn):hover { color: var(--ink); background: rgba(255, 255, 255, .05); } }
+.site-nav .btn { margin-left: 8px; }
+.btn.lg { min-height: 52px; padding: 0 26px; font-size: 15.5px; }
+
+/* faint coordinate grid behind the hero, fading out at the edges */
+.hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); align-items: center; gap: 24px; min-height: calc(100svh - 72px); padding-block: 8px 40px; }
+.hero::before { content: ''; position: absolute; inset: -72px -40vw 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px);
+  background-size: 64px 64px; -webkit-mask-image: radial-gradient(ellipse 60% 70% at 60% 45%, #000 20%, transparent 75%); mask-image: radial-gradient(ellipse 60% 70% at 60% 45%, #000 20%, transparent 75%); }
+.hero-copy { max-width: 560px; }
+.hero h1 { font-size: clamp(42px, 5.4vw, 76px); }
+.hero h1 em { color: var(--mars); font-style: normal; }
+.hero h1 em.earth { color: var(--earth); }
+.hero .lede { margin-top: 22px; font-size: clamp(16px, 1.25vw, 18px); max-width: 48ch; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.hero-hint { margin-top: 22px; font-size: 13.5px; color: var(--dim); max-width: 46ch; }
+.hero-hint b { color: var(--muted-ink); font-weight: 500; }
+.on-touch { display: none; }
+@media (hover: none) { .on-hover { display: none; } .on-touch { display: inline; } }
+
+.hero-vis { position: relative; width: 100%; aspect-ratio: 1 / .92; max-height: calc(100svh - 110px); justify-self: end; }
+.planet { position: absolute; display: block; }
+.planet.mars { left: 0; bottom: 6%; width: 76%; aspect-ratio: 1; cursor: crosshair; }
+.planet.earth { right: 0; top: 0; width: 27%; aspect-ratio: 1; }
+.planet-fallback { position: absolute; border-radius: 50%; pointer-events: none; }
+.planet-fallback.mars { left: 7%; bottom: 12.5%; width: 62%; aspect-ratio: 1; background: radial-gradient(circle at 36% 34%, #C4552B, #6E2412 58%, #1B0A06); opacity: 0; transition: opacity 400ms var(--ease-out); }
+.hero-vis[data-gl='off'] .planet-fallback.mars { opacity: 1; }
+.orbits { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; transform: rotate(-9deg); }
+.orbits ellipse { fill: none; stroke: rgba(255, 255, 255, .16); stroke-width: 1; stroke-dasharray: 1 6; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+.arc { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.arc path { fill: none; stroke: #E8EDF2; stroke-opacity: .75; stroke-width: 1.5; stroke-dasharray: 2 6; stroke-linecap: round; filter: drop-shadow(0 0 4px rgba(70, 194, 242, .55)); }
+.arc circle { fill: var(--earth); filter: drop-shadow(0 0 6px var(--earth)); transition: opacity 200ms var(--ease-out); }
+.pin { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; transition: opacity 200ms var(--ease-out); }
+.pin i { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--mars); box-shadow: 0 0 0 3px rgba(7, 9, 12, .7), 0 0 14px var(--mars); }
+.pin i::after { content: ''; position: absolute; inset: -9px; border-radius: 50%; border: 1px solid var(--mars); opacity: .6; animation: pin 2.4s var(--ease-out) infinite; }
+.pin.earth i { width: 8px; height: 8px; margin: -4px 0 0 -4px; background: var(--earth); box-shadow: 0 0 0 3px rgba(7, 9, 12, .7), 0 0 12px var(--earth); }
+.pin.earth i::after { border-color: var(--earth); }
+@keyframes pin { from { transform: scale(.6); opacity: .8; } to { transform: scale(1.5); opacity: 0; } }
+.hover-read { position: absolute; left: 0; top: 0; z-index: 4; display: grid; gap: 1px; padding: 6px 10px; border-radius: 10px; background: rgba(7, 9, 12, .82); border: 1px solid var(--line-2); white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 140ms var(--ease-out); }
+.hover-read b { font-weight: 500; font-size: 12px; } .hover-read span { font-size: 12px; color: var(--muted-ink); }
+.twin-read { position: absolute; right: 0; bottom: 0; z-index: 3; width: min(330px, 62%); padding: 16px 18px; border-radius: 18px; }
+.tr-top { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--muted-ink); }
+.tag-preview { padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(255, 194, 77, .5); color: var(--warn); font-size: 11.5px; font-weight: 600; }
+.tr-pair { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin-top: 10px; font: 500 18px/1.25 var(--display); }
+.ink-mars { color: var(--mars); } .ink-earth { color: var(--earth); } .tr-arrow { color: var(--dim); }
+.tr-coords { margin-top: 4px; font-size: 11.5px; }
+.tr-score { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin-top: 10px; }
+.tr-score span { font-size: 12.5px; color: var(--muted-ink); }
+.quick { position: absolute; left: 0; bottom: -6px; z-index: 3; display: flex; flex-wrap: wrap; gap: 6px; max-width: 46%; }
+.chip-btn { min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(7, 9, 12, .5); font-size: 12.5px; color: var(--muted-ink);
+  transition: color var(--d-ui) var(--ease-out), border-color var(--d-ui) var(--ease-out), transform 140ms var(--ease-out); }
+.chip-btn:active { transform: scale(.97); }
+.chip-btn.on { color: var(--mars); border-color: rgba(255, 122, 69, .6); }
+@media (hover: hover) { .chip-btn:not(.on):hover { color: var(--ink); border-color: rgba(255, 255, 255, .3); } }
+
+/* gravity strip */
+.gravity { border-block: 1px solid var(--line); background: rgba(255, 255, 255, .012); }
+.g-row { display: grid; grid-template-columns: 1.1fr repeat(3, 1fr); align-items: center; gap: 16px; padding-block: 28px; }
+.gravity h2 { font-size: clamp(22px, 2vw, 28px); }
+.gravity h2 span { display: block; color: var(--muted-ink); }
+.gauge-card { display: flex; align-items: center; gap: 16px; padding: 14px 16px; border-radius: 18px; }
+.hop { position: relative; flex: none; width: 18px; height: 64px; border-radius: 9px; background: rgba(255, 255, 255, .04); border: 1px solid var(--line); }
+.hop i { position: absolute; left: 4px; bottom: 3px; width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--ink)); box-shadow: 0 0 10px var(--c, var(--ink));
+  animation: hop calc(var(--t) / 2) cubic-bezier(.33, .67, .67, 1) infinite alternate; }
+/* rise decelerates; with alternate the same curve plays backwards on the way down, so the fall accelerates (a parabola).
+   Half the airborne time per direction; the rise is v²/2g in proportion to the Moon's (the track's full height). */
+@keyframes hop { to { transform: translateY(calc(-1 * var(--rise))); } }
+.gauge-card[data-world='earth'] { --c: var(--earth); } .gauge-card[data-world='mars'] { --c: var(--mars); } .gauge-card[data-world='moon'] { --c: var(--moon); }
+.g-name { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--muted-ink); }
+.g-val { margin-top: 2px; font: 500 28px/1.15 var(--mono); }
+.g-val small { margin-left: 6px; font-size: 12.5px; color: var(--dim); }
+.g-sub { margin-top: 2px; font-size: 11.5px; color: var(--dim); }
+
+/* how it works */
+.sec-title { font-size: clamp(30px, 3.4vw, 46px); max-width: 18ch; }
+.sec-lede { margin-top: 14px; max-width: 60ch; }
+.pipeline { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 3vw, 40px); margin-top: 48px; }
+.beams { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
+.beam-base { stroke: rgba(255, 255, 255, .1); stroke-width: 1; fill: none; }
+.beam-glow { stroke-width: 2; fill: none; stroke-linecap: round; filter: drop-shadow(0 0 4px rgba(70, 194, 242, .5)); }
+.pipe-node { position: relative; }
+.pipe-ic { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 20px; color: var(--ink); }
+.pipe-ic svg { width: 24px; height: 24px; }
+.pipe-node[data-tone='mars'] .pipe-ic { color: var(--mars); }
+.pipe-node[data-tone='earth'] .pipe-ic { color: var(--earth); }
+.pipe-node[data-tone='core'] .pipe-ic { width: 76px; height: 76px; margin-top: -6px; color: var(--score); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 0 36px -10px rgba(143, 240, 192, .55); }
+.pipe-node h3 { margin-top: 18px; font-size: 17px; font-weight: 600; }
+.pipe-node p { margin-top: 6px; font-size: 14.5px; color: var(--muted-ink); max-width: 30ch; }
+
+/* readouts */
+.split { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+.split .lede { margin-top: 16px; max-width: 46ch; }
+.facts { display: grid; gap: 10px; margin-top: 24px; }
+.facts li { padding-left: 16px; border-left: 1px solid var(--line-2); color: var(--muted-ink); font-size: 15px; }
+.facts b { color: var(--ink); font-weight: 500; }
+.replay { display: grid; gap: 14px; }
+.replay h3 { font-size: 15px; font-weight: 600; }
+.replay-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.replay .ro { background: rgba(255, 255, 255, .025); }
+.replay-chart svg { display: block; width: 100%; height: 96px; overflow: visible; }
+.rl-measured, .rl-inferred { fill: none; stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+.rl-measured { stroke: var(--mars); filter: drop-shadow(0 0 4px var(--mars)); }
+.rl-inferred { stroke: var(--ink); stroke-dasharray: 4 3; opacity: .85; }
+.replay-chart figcaption { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 8px; font-size: 12px; color: var(--muted-ink); }
+.replay-chart .line { margin: 0 6px 3px 0; }
+
+/* worlds: asset cards */
+.worlds { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 36px; }
+.asset-card { position: relative; display: grid; grid-template-columns: 170px minmax(0, 1fr); align-items: center; gap: 26px; padding: 24px; border-radius: 22px;
+  transition: border-color var(--d-ui) var(--ease-out), transform 160ms var(--ease-out); }
+.asset-card:active { transform: scale(.99); }
+@media (hover: hover) { .asset-card:hover { border-color: rgba(255, 255, 255, .22); } .asset-card:hover .ac-go span { transform: translateX(4px); } }
+.thumb-wrap { position: relative; width: 170px; aspect-ratio: 1; }
+.thumb { position: absolute; inset: 0; width: 100%; height: 100%; }
+.thumb-wrap .planet-fallback { inset: 9%; background: radial-gradient(circle at 36% 34%, #3a3a38, #0d0d0c); }
+.asset-card[data-world='mars'] .planet-fallback { background: radial-gradient(circle at 36% 34%, #C4552B, #2a0e06); }
+.asset-card h3 { font-size: 30px; }
+.ac-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 12px; }
+.ac-stats dt { font-size: 12px; color: var(--dim); }
+.ac-stats dd { font-size: 14px; }
+.ac-src { margin-top: 12px; font-size: 13px; color: var(--muted-ink); }
+.ac-go { display: inline-flex; gap: 6px; margin-top: 14px; font-weight: 600; font-size: 14.5px; color: var(--ink); }
+.asset-card[data-world='mars'] .ac-go { color: var(--mars); }
+.ac-go span { transition: transform var(--d-ui) var(--ease-out); }
+
+.band { display: grid; justify-items: center; gap: 14px; padding: clamp(48px, 7vw, 88px) 24px; border-radius: 26px; text-align: center;
+  background: radial-gradient(ellipse 60% 80% at 50% 120%, rgba(255, 122, 69, .14), transparent 60%), linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .02)); }
+.band h2 { font-size: clamp(30px, 4vw, 52px); }
+.band h2 em { font-style: normal; color: var(--mars); }
+.band .btn { margin-top: 8px; }
+.site-foot { display: grid; grid-template-columns: auto 1fr; gap: 12px 40px; align-items: start; margin-top: var(--rhythm); padding-block: 28px 40px; border-top: 1px solid var(--line); }
+.site-foot p { font-size: 13px; color: var(--dim); max-width: 90ch; }
+.site-foot a { color: var(--muted-ink); text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 1080px) {
+  .hero { grid-template-columns: 1fr; min-height: 0; padding-top: 24px; }
+  .hero-vis { max-width: 640px; justify-self: center; margin-top: 12px; }
+  .g-row { grid-template-columns: 1fr 1fr; }
+  .g-row h2 { grid-column: 1 / -1; }
+  .pipeline { grid-template-columns: 1fr 1fr; row-gap: 40px; }
+  .beams { display: none; }
+  .split, .worlds { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .site-nav nav a:not(.btn) { display: none; }
+  .site-nav .btn { min-height: 44px; padding: 0 16px; font-size: 13.5px; }
+  .hero h1 { font-size: clamp(38px, 11vw, 52px); }
+  .hero-vis { aspect-ratio: auto; display: grid; max-height: none; }
+  .hero-vis > .planet.mars, .hero-vis > .orbits, .hero-vis > .planet-fallback.mars { position: relative; left: auto; bottom: auto; width: 100%; grid-area: 1 / 1; }
+  .hero-vis > .planet.earth { width: 34%; }
+  .twin-read { position: relative; width: 100%; margin-top: 8px; }
+  .quick { position: relative; max-width: none; margin-top: 12px; bottom: auto; }
+  .g-row { grid-template-columns: 1fr; }
+  .pipeline { grid-template-columns: 1fr; }
+  .replay-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .replay-grid .ro:first-child { grid-column: 1 / -1; }
+  .asset-card { grid-template-columns: 1fr; justify-items: start; }
+  .thumb-wrap { width: 140px; }
+  .site-foot { grid-template-columns: 1fr; }
+}

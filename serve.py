@@ -1,12 +1,13 @@
-# .venv/bin/python serve.py — http://localhost:8642
-# Static files (caching disabled so reloads never mix stale ES modules), the simulator routes (/sim, /sim/result,
-# /sim/drive, /sim/sensors -> sim.html) and GET /api/analog, which runs the TerraTwin search engine and S1 terrain
+# .venv/bin/python serve.py — http://localhost:8642   (build the front end first: npm ci && npm run build)
+# The Vite build in dist/ (hashed /assets/* cached for a year, everything else no-store), /data/* from data/, the
+# simulator routes (/sim, /sim/result, /sim/drive, /sim/sensors -> sim.html) and GET /api/analog, which runs the TerraTwin search engine and S1 terrain
 # model from vendor/mars_moon_earth_dataset on a Moon/Mars coordinate.
 #   .venv/bin/python serve.py --check   runs the matcher on Jezero and on polar sites and asserts the results are sane
 import functools, http.server, json, math, os, sys, threading, urllib.parse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+DIST = ROOT / 'dist'  # npm run build
 REPO = ROOT / 'vendor' / 'mars_moon_earth_dataset'
 DATA, PROFILE = REPO / 'prepared' / '0.2.0', 'dry_barren_terrain'
 PROFILES = ROOT / '.cache' / 'profiles_0.2.0'  # DATA plus the two derived profiles below; rebuilt on every start
@@ -164,8 +165,16 @@ def legacy_analog(body, lat, lon):
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
-        self.send_header('Cache-Control', 'no-store')
+        # Vite's dist/assets/* names carry a content hash, so they can be cached for good; everything else is fresh
+        immutable = urllib.parse.urlsplit(self.path).path.startswith('/assets/')
+        self.send_header('Cache-Control', 'public, max-age=31536000, immutable' if immutable else 'no-store')
         super().end_headers()
+
+    def translate_path(self, path):
+        p = urllib.parse.unquote(urllib.parse.urlsplit(path).path)
+        if p.startswith('/data/'):  # DEMs, labels and traces live outside dist/; the folder is flat, so .name blocks ../
+            return str(ROOT / 'data' / Path(p[len('/data/'):]).name)
+        return super().translate_path(path)
 
     def reply(self, code, obj):
         body = json.dumps(obj, allow_nan=False).encode()
@@ -218,5 +227,7 @@ if __name__ == '__main__':
     print(MODEL_ERROR or f"Model ready: {INDEX.meta.get('model')}")
     port = int(os.environ.get('PORT', 8642))  # hosts like Render set PORT and need every interface
     print(f'Serving http://localhost:{port} (Ctrl+C to stop)')
-    handler = functools.partial(Handler, directory=str(ROOT))
+    if not (DIST / 'index.html').exists():
+        print('dist/ is missing: run `npm ci && npm run build` first (only /api and /data will answer).', file=sys.stderr)
+    handler = functools.partial(Handler, directory=str(DIST))
     http.server.ThreadingHTTPServer(('0.0.0.0' if 'PORT' in os.environ else '127.0.0.1', port), handler).serve_forever()

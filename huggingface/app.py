@@ -1,5 +1,5 @@
 """Hugging Face Space entry point. Uses the free Gradio SDK slot (Docker is paid) but not Gradio itself:
-downloads the GeoNexus app from GitHub, the private dataset from the HF dataset repo (scripts/fetch_dataset_hf.py,
+downloads the GeoNexus app from GitHub, builds its front end (scripts/build_frontend.sh), the private dataset from the HF dataset repo (scripts/fetch_dataset_hf.py,
 Space variable DATA_REPO + secret HF_TOKEN), then becomes serve.py on port 7860, the port the Space exposes."""
 import io
 import os
@@ -15,6 +15,8 @@ shutil.rmtree(APP, ignore_errors=True)  # the home dir can survive restarts: alw
 with urllib.request.urlopen('https://github.com/ikat5/GeoNexus/archive/refs/heads/main.zip') as r:
     zipfile.ZipFile(io.BytesIO(r.read())).extractall(Path.home())
 os.chdir(APP)
+if not (APP / 'dist' / 'index.html').exists():  # the Vite front end; fetches Node itself if the image has none
+    subprocess.check_call(['bash', 'scripts/build_frontend.sh'])
 subprocess.check_call([sys.executable, 'scripts/fetch_dataset_hf.py'])
 os.environ['PORT'] = '7860'
 try:  # free accounts only get ZeroGPU hardware, which stops a Space that declares no @spaces.GPU function

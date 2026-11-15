@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Render build step. Installs Python deps, then (only if DATASET_TOKEN is set) fetches the private
+# Render build step. Installs Python deps, builds the front end (dist/), then (only if DATASET_TOKEN is set) fetches the private
 # mars_moon_earth_dataset into vendor/: code, the three 0.2.0 feature tables (Git LFS) and the S1 index (release asset).
 # Without the token the site still deploys; /api/analog then answers "Model unavailable".
 set -euo pipefail
 pip install -r requirements.txt
+bash scripts/build_frontend.sh
 
 if [ -z "${DATASET_TOKEN:-}" ]; then echo "DATASET_TOKEN not set: deploying without the Earth-twin model"; exit 0; fi
 REPO=ikat5/mars_moon_earth_dataset DEST=vendor/mars_moon_earth_dataset

@@ -57,6 +57,9 @@ let started = false;
 export async function init() {
   if (started) return;
   started = true;
+  // /sim?pin=lat,lon (the landing page's "Launch" button): pin that site and run the real model on it. Read before
+  // setBody() rewrites the URL.
+  const pin = new URLSearchParams(location.search).get('pin')?.split(',').map(Number);
   addEventListener('popstate', () => { const b = worldOf(); if (b !== S.body) setBody(b); else route(); });
   route();
   try {
@@ -71,6 +74,7 @@ export async function init() {
   });
   S.ready = true;
   setBody(S.body, true);
+  if (pin?.length === 2 && Math.abs(pin[0]) <= 90 && Math.abs(pin[1]) <= 180) target!.ready.then(() => target!.pin(pin[0], pin[1]));
 }
 
 export function setBody(b: Body, first = false) {

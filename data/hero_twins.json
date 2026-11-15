@@ -1,0 +1,282 @@
+[
+ {
+  "name": "Gale Crater",
+  "lat": -4.59,
+  "lon": 137.44,
+  "landform": "dunes/linear",
+  "twin": {
+   "lat": 27.688,
+   "lon": 53.062,
+   "name": "Fars Province, Iran",
+   "fit": 61,
+   "shape": 0.76,
+   "landform": "dunes/linear"
+  }
+ },
+ {
+  "name": "Jezero Crater",
+  "lat": 18.41,
+  "lon": 77.69,
+  "landform": "mixed",
+  "twin": {
+   "lat": 29.812,
+   "lon": 54.438,
+   "name": "Yazd Province, Iran",
+   "fit": 95,
+   "shape": 0.91,
+   "landform": "mixed"
+  }
+ },
+ {
+  "name": "Olympus Mons",
+  "lat": 18.65,
+  "lon": -133.8,
+  "landform": "dunes/linear",
+  "twin": {
+   "lat": 29.562,
+   "lon": 57.938,
+   "name": "Kerman Province, Iran",
+   "fit": 55,
+   "shape": 0.17,
+   "landform": "dunes/linear"
+  }
+ },
+ {
+  "name": "Hellas Planitia",
+  "lat": -42.43,
+  "lon": 70.5,
+  "landform": "mixed",
+  "twin": {
+   "lat": 43.688,
+   "lon": 102.188,
+   "name": "\u00d6mn\u00f6govi, Mongolia",
+   "fit": 78,
+   "shape": 0.92,
+   "landform": "mixed"
+  }
+ },
+ {
+  "name": "Utopia Planitia",
+  "lat": 46.74,
+  "lon": 117.52,
+  "landform": "mixed",
+  "twin": {
+   "lat": 19.812,
+   "lon": 26.938,
+   "name": "North Darfur, Sudan",
+   "fit": 98,
+   "shape": 0.95,
+   "landform": "mixed"
+  }
+ },
+ {
+  "name": "Valles Marineris",
+  "lat": -14.01,
+  "lon": -58.59,
+  "landform": "cratered",
+  "twin": {
+   "lat": -11.312,
+   "lon": -76.812,
+   "name": "Lima, Peru",
+   "fit": 62,
+   "shape": 0.86,
+   "landform": "cratered"
+  }
+ },
+ {
+  "name": "Meridiani Planum",
+  "lat": -1.95,
+  "lon": -5.53,
+  "landform": "smooth plain",
+  "twin": {
+   "lat": 35.188,
+   "lon": 39.938,
+   "name": "Deir ez-Zor Governorate, Syria",
+   "fit": 99,
+   "shape": 0.86,
+   "landform": "smooth plain"
+  }
+ },
+ {
+  "name": "Arabia Terra",
+  "lat": 21.25,
+  "lon": 5.72,
+  "landform": "mixed",
+  "twin": {
+   "lat": 17.688,
+   "lon": 20.688,
+   "name": "Ennedi-Ouest, Chad",
+   "fit": 97,
+   "shape": 0.88,
+   "landform": "mixed"
+  }
+ },
+ {
+  "name": "Acidalia Planitia",
+  "lat": 49.76,
+  "lon": -20.74,
+  "landform": "mixed",
+  "twin": {
+   "lat": 28.812,
+   "lon": 17.062,
+   "name": "District of Al-Jufra, Libya",
+   "fit": 100,
+   "shape": 0.89,
+   "landform": "mixed"
+  }
+ },
+ {
+  "name": "Argyre Planitia",
+  "lat": -49.84,
+  "lon": -43.31,
+  "landform": "knobby/fractured",
+  "twin": {
+   "lat": 42.188,
+   "lon": 101.688,
+   "name": "Inner Mongolia, China",
+   "fit": 96,
+   "shape": 0.98,
+   "landform": "knobby/fractured"
+  }
+ },
+ {
+  "name": "Arsia Mons",
+  "lat": -8.26,
+  "lon": -120.09,
+  "landform": "dunes/linear",
+  "twin": {
+   "lat": 34.188,
+   "lon": 59.562,
+   "name": "Razavi Khorasan, Iran",
+   "fit": 89,
+   "shape": 0.81,
+   "landform": "dunes/linear"
+  }
+ },
+ {
+  "name": "Chryse Planitia",
+  "lat": 22.27,
+  "lon": -47.95,
+  "landform": "dunes/linear",
+  "twin": {
+   "lat": 26.562,
+   "lon": 18.438,
+   "name": "District of Al-Jufra, Libya",
+   "fit": 98,
+   "shape": 0.94,
+   "landform": "dunes/linear"
+  }
+ },
+ {
+  "name": "Syrtis Major Planum",
+  "lat": 9.2,
+  "lon": 67.1,
+  "landform": "mixed",
+  "twin": {
+   "lat": 44.312,
+   "lon": 94.938,
+   "name": "Govi-Altai, Mongolia",
+   "fit": 77,
+   "shape": 0.84,
+   "landform": "mixed"
+  }
+ },
+ {
+  "name": "Terra Cimmeria",
+  "lat": -32.68,
+  "lon": 147.75,
+  "landform": "mixed",
+  "twin": {
+   "lat": 42.062,
+   "lon": 94.062,
+   "name": "Xinjiang, China",
+   "fit": 97,
+   "shape": 0.71,
+   "landform": "mixed"
+  }
+ },
+ {
+  "name": "Amazonis Planitia",
+  "lat": 25.75,
+  "lon": -162.91,
+  "landform": "smooth plain",
+  "twin": {
+   "lat": 45.188,
+   "lon": 61.438,
+   "name": "Kyzylorda Region, Kazakhstan",
+   "fit": 100,
+   "shape": 0.98,
+   "landform": "smooth plain"
+  }
+ },
+ {
+  "name": "Isidis Planitia",
+  "lat": 13.94,
+  "lon": 88.38,
+  "landform": "smooth plain",
+  "twin": {
+   "lat": 19.688,
+   "lon": 27.562,
+   "name": "Northern State, Sudan",
+   "fit": 99,
+   "shape": 0.94,
+   "landform": "smooth plain"
+  }
+ },
+ {
+  "name": "Noctis Labyrinthus",
+  "lat": -6.36,
+  "lon": -101.19,
+  "landform": "cratered",
+  "twin": {
+   "lat": 22.438,
+   "lon": 59.188,
+   "name": "Ash Sharqiyah South Governorate, Oman",
+   "fit": 58,
+   "shape": 0.36,
+   "landform": "cratered"
+  }
+ },
+ {
+  "name": "Avernus Colles",
+  "lat": -1.73,
+  "lon": 171.02,
+  "landform": "knobby/fractured",
+  "twin": {
+   "lat": 25.938,
+   "lon": 59.562,
+   "name": "Sistan and Baluchestan Province, Iran",
+   "fit": 92,
+   "shape": 0.87,
+   "landform": "knobby/fractured"
+  }
+ },
+ {
+  "name": "Phoenix landing site",
+  "lat": 68.22,
+  "lon": -125.75,
+  "landform": "mixed",
+  "twin": {
+   "lat": 44.562,
+   "lon": 104.438,
+   "name": "\u00d6mn\u00f6govi, Mongolia",
+   "fit": 98,
+   "shape": 0.89,
+   "landform": "mixed"
+  }
+ },
+ {
+  "name": "Planum Boreum",
+  "lat": 87.32,
+  "lon": 54.96,
+  "landform": "dunes/linear",
+  "twin": {
+   "lat": 31.562,
+   "lon": 66.188,
+   "name": "Kandahar Province, Afghanistan",
+   "fit": 96,
+   "shape": null,
+   "landform": "dunes/linear"
+  }
+ }
+]

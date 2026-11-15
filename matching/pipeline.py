@@ -159,9 +159,11 @@ def match(body, lat, lon, legacy_order=False):
     E = earth()
     lat, lon = float(lat), float((lon + 180) % 360 - 180)
     qz = cut_patch(body, lat, lon)
+    t_patch = time.perf_counter()
     if qz is None:
         return {'status': 'no_elevation_data', 'error': f'No valid {body} elevation data at {lat:.3f}, {lon:.3f}.'}
     qd = describe(qz, PX_M)
+    t_feat = time.perf_counter()
     polar = abs(lat) > CONFIG['polar_query_lat']
     icy_query = body == 'mars' and abs(lat) >= CONFIG['landform']['icy_query_min_abs_lat']
     qclass = landform_class(qd, ice=icy_query)
@@ -250,7 +252,7 @@ def match(body, lat, lon, legacy_order=False):
                    'core_terrain': {k: float(qd[k]) for k in FEATS}},
         'screened': n_screened if tried else 0, 'passed': n_passed if tried else 0, 'candidates': chosen,
         'ranking_method': 'stage1_only' if legacy_order else 'two_stage', 'learned_status': 'used' if shape_all is not None else None,
-        'timing_s': {'total': round(time.perf_counter() - t0, 3), **timings},
+        'timing_s': {'total': round(time.perf_counter() - t0, 3), 'patch': round(t_patch - t0, 3), 'features': round(t_feat - t_patch, 3), **timings},
     }
 
 

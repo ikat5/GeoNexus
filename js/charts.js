@@ -1,23 +1,32 @@
 // Groups of four rolling Chart.js plots sharing a time axis; each chart plots one value per series.
+// Chart.js, not a streaming-chart library: air density needs a log axis and the sensor charts shade the gap between lines.
+import Chart from 'chart.js/auto';
 export const TELEMETRY = [
   { title: 'Elevation', unit: 'm' }, { title: 'Slope', unit: '°' }, { title: 'Air density', unit: 'kg/m³' }, { title: 'Temperature', unit: 'K' },
 ];
 export const MERGED = [
   { title: 'Relief Δh from deploy', unit: 'm' }, { title: 'Slope', unit: '°' }, { title: 'Air density', unit: 'kg/m³ · log', log: true }, { title: 'Temperature', unit: 'K' },
 ];
-const axis = { ticks: { color: '#8A92A3', font: { size: 10, family: "'JetBrains Mono', monospace" }, maxTicksLimit: 4 }, grid: { color: 'rgba(255,255,255,.06)' }, border: { display: false } };
+const axis = { ticks: { color: '#7C8696', font: { size: 10, family: "'Geist Mono Variable', ui-monospace, monospace" }, maxTicksLimit: 4 }, grid: { color: 'rgba(255,255,255,.05)' }, border: { display: false } };
+// soft bloom on the data lines only (the HUD rule: glow belongs to data, not chrome)
+const glow = {
+  id: 'glow',
+  beforeDatasetDraw(c, { meta }) { c.ctx.save(); c.ctx.shadowColor = meta.dataset.options.borderColor; c.ctx.shadowBlur = 8; },
+  afterDatasetDraw(c) { c.ctx.restore(); },
+};
 
 export function createChartGroup(el, defs, series, { max = 150, legend = true } = {}) {
   el.innerHTML = defs.map((d) => `<figure class="chart"><figcaption><span>${d.title} (${d.unit})</span><b class="note"></b></figcaption><div class="chart-box"><canvas></canvas></div></figure>`).join('');
   const notes = [...el.querySelectorAll('.note')];
   const charts = [...el.querySelectorAll('canvas')].map((cv, i) => new Chart(cv, {
     type: 'line',
-    data: { labels: [], datasets: series.map((s) => ({ label: s.label, data: [], borderColor: s.color, borderWidth: 1.5, borderDash: s.dash ? [4, 3] : [], pointRadius: 0 })) },
+    data: { labels: [], datasets: series.map((s) => ({ label: s.label, data: [], borderColor: s.color, borderWidth: 1.5, borderDash: s.dash ? [4, 3] : [], pointRadius: 0, fill: s.fill ? '-1' : false, backgroundColor: s.fill })) },
     options: {
       animation: false, maintainAspectRatio: false, spanGaps: true,
-      plugins: { legend: { display: legend, labels: { color: '#AEB5C4', boxWidth: 10, font: { size: 10 } } } },
+      plugins: { legend: { display: legend, labels: { color: '#A3ADBB', boxWidth: 10, font: { size: 10 } } } },
       scales: { x: axis, y: defs[i].log ? { ...axis, type: 'logarithmic' } : axis },
     },
+    plugins: [glow],
   }));
   return {
     // rows[i] = one value per series for chart i (null = gap)

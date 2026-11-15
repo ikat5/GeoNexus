@@ -61,7 +61,7 @@ export function addLabels(viewer, features, ellipsoid, heightAt) {
     const color = Cesium.Color.fromCssColorString(COLORS[type] ?? '#67e8f9');
     const position = Cesium.Cartesian3.fromDegrees(lng, lat, heightAt(lng * D2R, lat * D2R) + Math.min(5000, 50 + d * 10), ellipsoid);
     const label = labels.add({
-      position, text: name, font: '12px ui-monospace, monospace', fillColor: color, outlineColor: Cesium.Color.BLACK, outlineWidth: 3,
+      position, text: name, font: "12px 'Geist Mono Variable', ui-monospace, monospace", fillColor: color, outlineColor: Cesium.Color.BLACK, outlineWidth: 3,
       style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -12), horizontalOrigin: Cesium.HorizontalOrigin.CENTER, distanceDisplayCondition: ddc,
       scaleByDistance: new Cesium.NearFarScalar(ref * 0.05, 1.1, ref, 0.7), disableDepthTestDistance: 2e5, // far side stays hidden
     });
@@ -74,4 +74,5 @@ export function addLabels(viewer, features, ellipsoid, heightAt) {
   cam.percentageChanged = 0.02;
   cam.changed.addEventListener(cull);
   cull();
+  return (show) => { labels.show = points.show = show; }; // the console's "toggle labels" action
 }

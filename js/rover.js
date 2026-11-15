@@ -22,7 +22,7 @@ export function travel(lat, lon, hd, s) {
 export class Rover {
   // atmosphere(h, lat, lon) -> {T, p, rho}; defaults to the world model, swapped for live weather on Earth
   constructor(world, heightAt, lon, lat, h0, atmosphere = world.atmosphere) {
-    Object.assign(this, { world, heightAt, atmosphere, lon, lat, heading: Math.random() * TAU, v: 0, t: 0, F: 0, Fi: 0, pitch: 0, planT: 0, stuck: 0 });
+    Object.assign(this, { world, heightAt, atmosphere, lon, lat, heading: Math.random() * TAU, v: 0, t: 0, F: 0, Fi: 0, pitch: 0, planT: 0, stuck: 0, stalls: 0 });
     this.h = this.h0 = heightAt(lon, lat) ?? h0;
     this.targetHeading = this.heading;
     this.truth = atmosphere(this.h, lat, lon);
@@ -50,7 +50,7 @@ export class Rover {
       }
     }
     this.stuck = this.v < 0.3 ? this.stuck + dt : 0;
-    if (this.stuck > 3) { this.targetHeading = wrap(this.heading + Math.PI); this.stuck = 0; this.planT = 5; }
+    if (this.stuck > 3) { this.targetHeading = wrap(this.heading + Math.PI); this.stuck = 0; this.planT = 5; this.stalls++; } // stalls: read by the UI only
     const turn = ((this.targetHeading - this.heading + 3 * Math.PI) % TAU) - Math.PI;
     this.heading = wrap(this.heading + clamp(turn, -0.6 * dt, 0.6 * dt));
 

@@ -76,6 +76,7 @@ export function Anomaly({ r }: { r: Result }) {
     <motion.div className="anomaly" role="status" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.32, ease: [0.23, 1, 0.32, 1] }}>
       <div className="an-head"><TriangleAlert aria-hidden="true" /><h3>Anomaly detected · {NAMES[k]} <Num value={L[k]} suffix="%" live /></h3>
         <button className="icon-btn" onClick={() => setHidden(k)} aria-label="Dismiss"><X /></button></div>
+      <div className="an-bar"><span>{NAMES[k]} agreement</span><Meter value={L[k]} tone="warn" label={`${NAMES[k]} agreement`} /><Num value={L[k]} suffix="%" live /></div>
       <p>{reason(k)}</p>
       <div className="an-actions">
         <button className="btn ghost" onClick={() => setHidden(k)}>Dismiss</button>
@@ -161,7 +162,7 @@ export function Candidates() {
           <li key={k.feature_id}>
             <button aria-pressed={i === r.pick} onClick={() => select(i)}>
               <span className="rank mono">{i + 1}</span>
-              <span className="nm">{r.resolved[i] ?? 'Locating…'}
+              <span className="nm" title={r.resolved[i]}>{shortEarth(r.resolved[i])}
                 <small className="mono">{coord(k.lat, k.lon)} · {k.landform} · {top(k.percentile, d.passed)}{i === r.driven ? ' · rover is here' : ''}</small>
               </span>
               <span className="sc mono"><Num value={k.terrain_fit} /><small>fit</small></span>

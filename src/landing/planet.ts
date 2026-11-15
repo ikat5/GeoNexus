@@ -13,7 +13,7 @@ void main() {
   float d = length(p);
   float edge = fwidth(d);
   // thin atmosphere halo outside the limb (premultiplied alpha)
-  float halo = exp(-max(d - uR, 0.0) * 30.0) * 0.5 * smoothstep(uR + 0.2, uR, d);
+  float halo = exp(-max(d - uR, 0.0) * 30.0) * 0.5 * smoothstep(uR + 0.2, uR, d) * (0.3 + 0.7 * smoothstep(-0.4, 0.6, dot(normalize(p + 1e-5), normalize(vec2(0.5, 0.42))))); // halo on the lit side
   if (d > uR + edge) { o = vec4(uRim * halo, halo); return; }
   vec3 n = vec3(p / uR, sqrt(max(0.0, 1.0 - dot(p, p) / (uR * uR))));
   float cl = cos(uLat), sl = sin(uLat);
@@ -34,12 +34,12 @@ void main() {
     vec3 v = vec3(nb.x, nb.y * cl - nb.z * sl, nb.y * sl + nb.z * cl);   // body -> view
     float lam = max(dot(v, L), 0.0);
     vec3 base = mix(mix(uLo, uMid, smoothstep(0.0, 0.32, h)), uHi, smoothstep(0.3, 0.75, h));
-    col = base * (0.05 + 1.15 * lam);
+    col = base * (0.015 + 1.3 * pow(lam, 1.25)); // a hard terminator: the night side goes nearly black
   } else {
     vec3 t = textureGrad(uTex, uv, dx, dy).rgb;
     float lights = smoothstep(0.22, 0.75, max(t.r, max(t.g, t.b)));
     float day = smoothstep(-0.05, 0.35, dot(n, L));
-    col = t * vec3(0.55, 0.85, 1.05) * 1.6 + lights * vec3(1.0, 0.78, 0.45) * 0.9 * (1.0 - day);
+    col = t * vec3(0.55, 0.85, 1.05) * 1.7 + lights * vec3(1.0, 0.8, 0.5) * 1.7 * (1.0 - day);
     col += day * vec3(0.05, 0.16, 0.22);
   }
   // HUD graticule every 30°, faint
@@ -47,7 +47,7 @@ void main() {
   vec2 gd = abs(fract(g - 0.5) - 0.5) / max(fwidth(g), 1e-4);
   col += (1.0 - min(min(gd.x, gd.y), 1.0)) * 0.05 * uRim * smoothstep(0.1, 0.6, n.z);
   float fres = pow(1.0 - n.z, 3.0);
-  col += uRim * fres * (0.18 + 0.95 * max(dot(n, L), 0.0)); // the lit limb glows, the night limb barely
+  col += uRim * fres * (0.18 + 1.3 * max(dot(n, L), 0.0)) + vec3(1.0, 0.92, 0.8) * pow(fres, 3.0) * pow(max(dot(n, L), 0.0), 2.0) * 0.9; // hot lit limb
   float a = smoothstep(uR + edge, uR - edge, d);
   o = vec4(col * a + uRim * halo * (1.0 - a), a + halo * (1.0 - a));
 }`;

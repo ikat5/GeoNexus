@@ -155,7 +155,7 @@ function SpeedGauge() {
       <div className="gauge-read">
         <p><b className="score-big"><Num value={t?.v} d={1} live /></b><small>m/s</small><span>Current speed · {worldName(S.body)}</span></p>
         <p><b className="score-big"><Num value={e?.v} d={1} live /></b><small>m/s</small><span>Current speed · Earth</span></p>
-        <p><b className="score-big dim"><Num value={ROVER.vTarget} d={1} /></b><small>m/s</small><span>Target speed (PI controller)</span></p>
+        <p><b className="score-big dim"><Num value={ROVER.vTarget} d={1} /></b><small>m/s</small><span>Target speed (PI controller, amber tick)</span></p>
       </div>
     </div>
   );

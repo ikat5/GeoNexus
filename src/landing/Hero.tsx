@@ -128,6 +128,9 @@ export function Hero({ onSite, pick }: { onSite: (s: Site) => void; pick?: Site 
         onPointerMove={onMove} onPointerLeave={() => { if (hover.current) hover.current.style.opacity = '0'; }}
         onClick={(e) => { const ll = at(e); if (ll) choose(nearest(ll[0], ll[1])); }} />
       <canvas ref={earthCv} className="planet earth" role="img" aria-label="Earth at night, NASA VIIRS Black Marble" />
+      <svg className="orbits front" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M-8 60 A 48 16 0 0 0 88 60" /><circle cx="14" cy="71" r=".8" /><circle cx="62" cy="75.3" r=".8" /><circle cx="83" cy="66.2" r=".6" />
+      </svg>
       <svg className="arc" aria-hidden="true"><path ref={arc} /><circle ref={dot} r="3" /></svg>
       <span ref={pin} className="pin mars" aria-hidden="true"><i /><b className="pin-label"><em>{site.name}</em>{coord(site.lat, site.lon, 1)}</b></span>
       <span ref={tpin} className="pin earth" aria-hidden="true"><i /><b className="pin-label"><em>{earthName(site)}</em>{coord(site.twin.lat, site.twin.lon, 1)}</b></span>

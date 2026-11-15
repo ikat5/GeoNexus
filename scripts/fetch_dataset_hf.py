@@ -9,7 +9,7 @@ from huggingface_hub import snapshot_download
 
 ROOT = Path(__file__).resolve().parents[1]
 dest = ROOT / 'vendor' / 'mars_moon_earth_dataset'
-snapshot_download(os.environ['DATA_REPO'], repo_type='dataset', local_dir=dest)
+snapshot_download(os.environ.get('DATA_REPO', 'ikat5/geonexus-data'), repo_type='dataset', local_dir=dest)
 (ROOT / '.cache').mkdir(exist_ok=True)
 shutil.copy(dest / 'cache' / 'earth_descriptors.npz', ROOT / '.cache' / 'earth_descriptors.npz')  # pre-computed: fast first queries
 print('dataset ready')

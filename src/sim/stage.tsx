@@ -41,7 +41,7 @@ export function Globe({ which, crosshair, strip = true, className }: { which: 't
   const s = useStore(), pane = which === 'target' ? target : earth, world = which === 'target' ? s.body : 'earth', r = pane?.rover;
   const res = s.results[s.body];
   const role = which === 'earth' ? 'Earth twin' : s.page === 'drive' ? `${worldName(world)} rover` : `${worldName(world)} target`;
-  const state = r ? coord(r.lat * R2D, r.lon * R2D, 3) : which === 'earth' ? (res?.state === 'loading' ? 'scanning for a match' : 'waiting for your pick') : pane?.isSpinning() ? 'turning · no site yet' : 'no site yet';
+  const state = r ? coord(r.lat * R2D, r.lon * R2D, 3) : which === 'earth' ? (res?.state === 'loading' ? 'scanning for a match' : res?.state === 'done' ? 'deploying rover' : 'waiting for your pick') : pane?.isSpinning() ? 'turning · no site yet' : 'no site yet';
   return (
     <div className={cn('globe-frame', className)} data-world={world} data-scanning={which === 'earth' && res?.state === 'loading' ? '' : undefined}
       style={which === 'target' ? { viewTransitionName: 'target-globe' } : undefined}>

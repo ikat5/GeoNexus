@@ -4,13 +4,14 @@ import { cn } from 'cn';
 import type { ReactNode } from 'react';
 
 const TIMING = { duration: 420, easing: 'cubic-bezier(.23,1,.32,1)' };
+const FAST = { duration: 220, easing: 'cubic-bezier(.23,1,.32,1)' }; // telemetry updates twice a second: settle well before the next
 
 // Every changing number goes through here: tabular mono digits that roll to the new value (NumberFlow skips the roll
 // under prefers-reduced-motion). null -> an em dash.
-export function Num({ value, d = 0, suffix, className }: { value: number | null | undefined; d?: number; suffix?: string; className?: string }) {
+export function Num({ value, d = 0, suffix, className, live }: { value: number | null | undefined; d?: number; suffix?: string; className?: string; live?: boolean }) {
   if (value == null || !Number.isFinite(value)) return <span className={cn('num', className)}>—</span>;
   return (
-    <NumberFlow className={cn('num', className)} value={value} suffix={suffix} transformTiming={TIMING} spinTiming={TIMING}
+    <NumberFlow className={cn('num', className)} value={value} suffix={suffix} transformTiming={live ? FAST : TIMING} spinTiming={live ? FAST : TIMING}
       format={{ minimumFractionDigits: d, maximumFractionDigits: d }} />
   );
 }

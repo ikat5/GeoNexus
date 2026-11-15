@@ -6,7 +6,8 @@ import { Meter, Num, Panel } from '@/components/hud';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { coord, num, shortEarth, shortSite } from '@/lib/format';
 import { Channels, Failure, LinkTo, TaskRows } from './panels';
-import { driveTo, earth, go, relative, S, select, target, useStore, worldName } from './store';
+import { driveTo, earth, go, relative, S, select, target, the, useStore, worldName } from './store';
+const cap = (x: string) => x[0].toUpperCase() + x.slice(1);
 import type { Result, Sample } from './types';
 
 const DECIMALS: Record<string, number> = { slope_median_deg: 2, slope_p90_deg: 2, relief_m: 0, roughness_rms_m: 1, anisotropy: 2, pit_density: 3, rough_1: 1, rough_4: 1, rough_16: 1 };
@@ -49,7 +50,7 @@ function reason(k: string) {
   const e = earth!.history, t = target!.history, n = worldName(S.body);
   if (k === 'density') {
     const re = mean(col(e, 'rho')), rt = mean(col(t, 'rho'));
-    return rt < 1e-4 ? `${n} has no atmosphere, so the Earth rover’s air (${re.toFixed(3)} kg/m³) has nothing to match. Density scores 0 here by design, not as an error.`
+    return rt < 1e-4 ? `${cap(the(S.body))} has no atmosphere, so the Earth rover’s air (${re.toFixed(3)} kg/m³) has nothing to match. Density scores 0 here by design, not as an error.`
       : `${n} air at this site is ${rt.toFixed(4)} kg/m³, about ${Math.round(re / rt)}× thinner than at the Earth site (${re.toFixed(3)} kg/m³). Three orders of magnitude apart scores 0.`;
   }
   if (k === 'temperature') {

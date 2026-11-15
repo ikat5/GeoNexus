@@ -6,8 +6,9 @@ import { Num, Panel } from '@/components/hud';
 
 const R = trace.rows as (number | null)[][]; // t, v, h, hE, slope, slopeE, rho, rhoE, T, TE
 const W = 320, H = 90;
-const rhoMax = Math.max(...R.flatMap((r) => [r[6] ?? 0, r[7] ?? 0])) * 1.15;
-const y = (v: number | null) => (v == null ? null : H - 6 - (v / rhoMax) * (H - 12));
+const RHO = R.flatMap((r) => [r[6], r[7]]).filter((v): v is number => v != null);
+const lo = Math.min(...RHO) * 0.9, hi = Math.max(...RHO) * 1.08; // fit the axis to the data: the gap is the story
+const y = (v: number | null) => (v == null ? null : H - 6 - ((v - lo) / (hi - lo)) * (H - 12));
 const line = (k: number, upto: number) => R.slice(0, upto + 1).map((r, i) => (y(r[k]) == null ? null : `${((i / (R.length - 1)) * W).toFixed(1)},${y(r[k])!.toFixed(1)}`)).filter(Boolean).join(' ');
 
 export function Replay() {
@@ -34,14 +35,16 @@ export function Replay() {
         <div className="card-head"><h3>Mars rover · Gale Crater</h3><span className="mono dim">replay T+ {(r[0] ?? 0).toFixed(1).padStart(4, '0')} s</span></div>
         <dl className="replay-grid">
           {cells.map(([k, v, d, unit, inf]) => (
-            <div key={k} className="ro"><dt>{k}</dt><dd><Num value={v} d={d} /><small>{unit}</small></dd>
-              <span className="ro-sub">{k === 'Speed' ? 'target 12.0 m/s' : <>inferred <Num value={inf} d={d} /></>}</span></div>
+            <div key={k} className="ro"><dt>{k}</dt><dd><Num value={v} d={d} live /><small>{unit}</small></dd>
+              <span className="ro-sub">{k === 'Speed' ? 'target 12.0 m/s' : <>inferred <Num value={inf} d={d} live /></>}</span></div>
           ))}
         </dl>
         <figure className="replay-chart">
           <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label="Air density: measured, and inferred by the rover converging on it">
+            <polyline points={line(6, R.length - 1)} className="rl-ghost" />
             <polyline points={line(6, i)} className="rl-measured" />
             <polyline points={line(7, i)} className="rl-inferred" />
+            <line x1={(i / (R.length - 1)) * W} x2={(i / (R.length - 1)) * W} y1="0" y2={H} className="rl-head" />
           </svg>
           <figcaption><span><i className="line target" />measured air density</span><span><i className="line inferred" />inferred from drag on the wheels</span></figcaption>
         </figure>

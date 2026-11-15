@@ -229,7 +229,7 @@ kbd { display: inline-flex; align-items: center; gap: 2px; padding: 1px 6px; bor
 .twin-globe .chip.status:not(:empty) { display: block; top: auto; bottom: 10px; }
 /* Cesium: its credits stay visible (attribution), restyled and moved clear of the HUD */
 .pane .cesium-viewer-bottom { left: auto; right: 10px; bottom: 8px; z-index: 3; }
-.globe-frame:has(.hud-bottom) .pane .cesium-viewer-bottom { bottom: auto; top: 34px; right: 12px; }
+.globe-frame:has(.hud-bottom) .pane .cesium-viewer-bottom { bottom: 98px; }
 .cesium-widget-credits { display: flex !important; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 8px; background: rgba(7, 9, 12, .6); font: 10.5px/1.4 var(--sans) !important; color: var(--dim) !important; }
 .cesium-widget-credits a { color: var(--muted-ink) !important; }
 .cesium-credit-logoContainer img { height: 14px !important; opacity: .7; }
@@ -260,6 +260,11 @@ kbd { display: inline-flex; align-items: center; gap: 2px; padding: 1px 6px; bor
 .ro-sub .num { color: var(--muted-ink); }
 .readouts[data-world='earth'] dd { color: #DDF4FF; }
 
+/* short frames (laptops, the drive split): the strip would cover the globe, so it goes and the credits drop back */
+@container (max-height: 360px) {
+  .hud-bottom { display: none; }
+  .globe-frame:has(.hud-bottom) .pane .cesium-viewer-bottom { bottom: 8px; }
+}
 @container (max-width: 700px) {
   .readouts-strip { gap: 6px; }
   .readouts-strip .ro { padding: 7px 9px; }
@@ -519,6 +524,12 @@ kbd { display: inline-flex; align-items: center; gap: 2px; padding: 1px 6px; bor
 [data-slot='tooltip-content'] { background: rgba(14, 19, 26, .95) !important; color: var(--ink) !important; border: 1px solid var(--line-2); font-size: 12.5px !important; max-width: 280px; }
 [data-slot='tooltip-content'] svg, [data-slot='tooltip-content'] [class*='Arrow'] { display: none; }
 
+@media (max-height: 780px) {
+  .chart-box { height: 5.5rem; }
+  .charts.two .chart-box { height: clamp(7rem, 20vh, 10rem); }
+  .dock { padding: 10px 12px; } .dock .card-head { margin-bottom: 6px; }
+  .chart { padding: 8px 10px; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; transition-delay: 0ms !important; scroll-behavior: auto !important; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }

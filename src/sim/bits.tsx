@@ -48,7 +48,7 @@ export function Spark({ values, color, label }: { values: number[]; color: strin
 export function Readouts({ pane, world, layout = 'strip' }: { pane: Pane | null; world: string; layout?: 'strip' | 'grid' }) {
   useStore();
   const r = pane?.rover, tel = r?.telemetry(), vac = r?.est.vacuum, g = (WORLDS as Record<string, { g: number }>)[world].g;
-  const sub = (v: number | null | undefined, d: number, unit = '') => <>inferred <Num value={v} d={d} suffix={unit} /></>;
+  const sub = (v: number | null | undefined, d: number, unit = '') => <>inferred <Num value={v} d={d} suffix={unit} live /></>;
   const cells: [string, number | null | undefined, number, string, React.ReactNode][] = [
     ['Speed', r?.v, 1, 'm/s', <>g <Num value={g} d={2} /> m/s²</>],
     ['Elevation', tel?.[0][0], 0, 'm', sub(tel?.[0][1], 0)],
@@ -61,7 +61,7 @@ export function Readouts({ pane, world, layout = 'strip' }: { pane: Pane | null;
       {cells.map(([k, v, d, unit, s]) => (
         <div key={k} className="ro">
           <dt>{k}</dt>
-          <dd>{k === 'Air density' && vac ? <span className="num">Vacuum</span> : <Num value={r ? v : null} d={d} />}{!(k === 'Air density' && vac) && <small>{unit}</small>}</dd>
+          <dd>{k === 'Air density' && vac ? <span className="num">Vacuum</span> : <Num value={r ? v : null} d={d} live />}{!(k === 'Air density' && vac) && <small>{unit}</small>}</dd>
           <span className="ro-sub">{r ? s : '—'}</span>
         </div>
       ))}

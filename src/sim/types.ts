@@ -31,6 +31,6 @@ export interface Analog {
 }
 export interface Result {
   state: 'loading' | 'done' | 'error'; lat: number; lon: number; place: string | null; t0: number; ms?: number;
-  data?: Analog; message?: string; pick: number; driven: number; names: Promise<string>[]; resolved: string[];
+  data?: Analog; message?: string; pick: number; driven: number; own?: [number, number]; names: Promise<string>[]; resolved: string[];
 }
 export type Live = { elevation: number; slope: number; density: number; temperature: number; overall: number } | null;

@@ -16,19 +16,13 @@ const g = (k: string) => (WORLDS as Record<string, { g: number }>)[k].g;
 const H_MOON = (HOP * HOP) / (2 * g('moon'));
 
 function Gauge({ k, name }: { k: string; name: string }) {
-  const ref = useRef<HTMLDivElement>(null), [v, setV] = useState<number | null>(0);
-  useEffect(() => {
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setV(g(k)); io.disconnect(); } }, { threshold: 0.6 });
-    io.observe(ref.current!);
-    return () => io.disconnect();
-  }, [k]);
   const air = (2 * HOP) / g(k), peak = (HOP * HOP) / (2 * g(k));
   return (
-    <div ref={ref} className="gauge-card glass-2" data-world={k}>
+    <div className="gauge-card glass-2" data-world={k}>
       <div className="hop" aria-hidden="true" style={{ '--t': `${air.toFixed(3)}s`, '--rise': `${((peak / H_MOON) * 50).toFixed(1)}px` } as React.CSSProperties}><i /></div>
       <div>
         <p className="g-name"><i className={`dot ${k}`} aria-hidden="true" />{name}</p>
-        <p className="g-val"><Num value={v} d={2} /><small>m/s²</small></p>
+        <p className="g-val"><Num value={g(k)} d={2} /><small>m/s²</small></p>
         <p className="g-sub mono">a {HOP} m/s hop: {air.toFixed(2)} s airborne, {peak.toFixed(2)} m high</p>
       </div>
     </div>

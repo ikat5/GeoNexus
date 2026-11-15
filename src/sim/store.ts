@@ -18,6 +18,7 @@ const D2R = Math.PI / 180;
 const worldOf = (): Body => (new URLSearchParams(location.search).get('world') === 'moon' ? 'moon' : 'mars');
 const pageOf = (): Page => ORDER.find((p) => PAGES[p] === location.pathname.replace(/\/$/, '')) ?? 'explore';
 export const worldName = (b: string) => (WORLDS as Record<string, { name: string }>)[b].name;
+export const the = (b: string) => (b === 'moon' ? 'the Moon' : worldName(b)); // in a sentence: "on the Moon", "on Mars"
 
 // Persistent DOM nodes owned by Cesium and Chart.js for the whole session. React "hosts" move them between layouts
 // (desktop rails, phone sheet), so a canvas is never destroyed by a re-render.
@@ -70,7 +71,8 @@ export async function init() {
   }
   earth = E.createPane(nodes.earth, 'earth', {
     chartsEl: nodes.eCharts, onEvent: onEvent('earth'),
-    onClick: () => { const r = S.results[S.body]; if (r?.state === 'done') { r.driven = -1; emit(); } }, // the user chose their own Earth site
+    // the user chose their own Earth site (click or analog preset): remembered so a world switch can put the rover back
+    onClick: (lat: number, lon: number) => { const r = S.results[S.body]; if (r?.state === 'done') { r.driven = -1; r.own = [lat, lon]; emit(); } },
   });
   S.ready = true;
   setBody(S.body, true);
@@ -113,6 +115,7 @@ export function setBody(b: Body, first = false) {
     t.deploy(r.lon * D2R, r.lat * D2R);
     const c = r.data!.candidates[r.driven];
     if (c) earth!.deploy(c.lon * D2R, c.lat * D2R, r.names[r.driven]);
+    else if (r.own) earth!.deploy(r.own[1] * D2R, r.own[0] * D2R);
   } else if (!r) earth!.reset();
   history.replaceState(null, '', href(S.page));
   route();

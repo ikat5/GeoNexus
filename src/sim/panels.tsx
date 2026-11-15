@@ -7,7 +7,7 @@ import { Meter, Num, Panel } from '@/components/hud';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { coord, isMac, num, shortEarth, shortSite } from '@/lib/format';
 import { Readouts, Spark } from './bits';
-import { earth, follow, go, href, INK, nudge, paused, resetSite, S, setPaused, setSensor, target, useStore, worldName } from './store';
+import { earth, follow, go, href, INK, nudge, paused, resetSite, S, setPaused, setSensor, target, the, useStore, worldName } from './store';
 import type { Analog, Result } from './types';
 
 const R2D = 180 / Math.PI;
@@ -66,10 +66,10 @@ export function MissionPanel() {
   const c = r?.state === 'done' ? r.data!.candidates[0] : undefined;
   return (
     <Panel className="mission">
-      <h1 className="h-display">Find Earth’s twin for a place on <em>{n}</em></h1>
+      <h1 className="h-display">Find Earth’s twin for a place on <em>{the(s.body)}</em></h1>
       {!r ? (
         <>
-          <p className="lede">Click anywhere on {n}. The TerraTwin model reads a 16 km elevation patch around the point and searches Earth for the terrain that is most alike.</p>
+          <p className="lede">Click anywhere on {the(s.body)}. The TerraTwin model reads a 16 km elevation patch around the point and searches Earth for the terrain that is most alike.</p>
           <p className="hint"><MapPin aria-hidden="true" /><span>Or press <kbd>{isMac ? '⌘' : 'Ctrl'} K</kbd> to jump to a named crater or landing site.</span></p>
         </>
       ) : (
@@ -152,8 +152,8 @@ function SpeedGauge() {
         {e && <i className="tick world" style={{ top: mark(e.v), background: 'var(--earth)' }} />}
       </div>
       <div className="gauge-read">
-        <p><b className="score-big"><Num value={t?.v} d={1} /></b><small>m/s</small><span>Current speed · {worldName(S.body)}</span></p>
-        <p><b className="score-big"><Num value={e?.v} d={1} /></b><small>m/s</small><span>Current speed · Earth</span></p>
+        <p><b className="score-big"><Num value={t?.v} d={1} live /></b><small>m/s</small><span>Current speed · {worldName(S.body)}</span></p>
+        <p><b className="score-big"><Num value={e?.v} d={1} live /></b><small>m/s</small><span>Current speed · Earth</span></p>
         <p><b className="score-big dim"><Num value={ROVER.vTarget} d={1} /></b><small>m/s</small><span>Target speed (PI controller)</span></p>
       </div>
     </div>
@@ -222,7 +222,7 @@ export function SensorSide() {
         <tbody>
           {SENSOR_ROWS.map(([k, d, unit], i) => (
             <tr key={k}><th scope="row">{k} <small>{unit}</small></th>
-              <td><Num value={tel?.[i][0]} d={d} /></td><td className="inferred"><Num value={tel?.[i][1]} d={d} /></td></tr>
+              <td><Num value={tel?.[i][0]} d={d} live /></td><td className="inferred"><Num value={tel?.[i][1]} d={d} live /></td></tr>
           ))}
         </tbody>
       </table>
@@ -236,7 +236,7 @@ export function EmptyState() {
     <Panel className="empty" level={2}>
       <MapPin aria-hidden="true" className="empty-ic" />
       <h1 className="h-display">No {n} site chosen yet</h1>
-      <p className="lede">Pick a spot on the {n} globe first. The model result, live drive and sensor pages open up once there is a site.</p>
+      <p className="lede">Pick a spot on {the(S.body)} first. The model result, live drive and sensor pages open up once there is a site.</p>
       <LinkTo page="explore" className="btn primary">Go to Explore</LinkTo>
     </Panel>
   );

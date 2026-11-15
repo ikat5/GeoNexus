@@ -49,7 +49,7 @@ export function Globe({ which, crosshair, strip = true, className }: { which: 't
       {crosshair && <Crosshair />}
       <div className="hud-top"><span><i className={cn('dot', which === 'earth' ? 'earth' : 'target')} aria-hidden="true" />{role}</span><span className="mono">{state}</span></div>
       <span className="brk tl" aria-hidden="true" /><span className="brk tr" aria-hidden="true" /><span className="brk bl" aria-hidden="true" /><span className="brk br" aria-hidden="true" />
-      {strip && <div className="hud-bottom"><Readouts pane={pane} world={world} /></div>}
+      {strip && r && <div className="hud-bottom"><Readouts pane={pane} world={world} /></div>}
       {!s.ready && <div className="boot" aria-hidden="true"><span className="boot-globe" /></div>}
     </div>
   );

@@ -76,7 +76,7 @@ function BottomBar() {
         </TooltipTrigger>
         <TooltipContent side="top">{t ? 'Top-down map, chase view or low ground view, for both rovers' : 'Pin a site to deploy a rover first'}</TooltipContent>
       </Tooltip>
-      <button className="live-pill" aria-pressed={!!t && !paused()} disabled={!t} onClick={() => setPaused(!paused())} aria-label={paused() ? 'Resume drive' : 'Pause drive'}>
+      <button className="live-pill" aria-pressed={!!t && !paused()} disabled={!t} onClick={() => setPaused(!paused())} title={paused() ? 'Resume drive' : 'Pause drive'}>
         <i aria-hidden="true" />{!t ? 'Standby' : paused() ? 'Paused' : 'Live'}
       </button>
       <span className="met mono" aria-label="Mission elapsed time">T+ {hms(t?.t)}</span>

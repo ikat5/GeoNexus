@@ -36,7 +36,7 @@ export function Replay() {
         <dl className="replay-grid">
           {cells.map(([k, v, d, unit, inf]) => (
             <div key={k} className="ro"><dt>{k}</dt><dd><Num value={v} d={d} live /><small>{unit}</small></dd>
-              <span className="ro-sub">{k === 'Speed' ? 'target 12.0 m/s' : <>inferred <Num value={inf} d={d} live /></>}</span></div>
+              <dd className="ro-sub">{k === 'Speed' ? 'target 12.0 m/s' : <>inferred <Num value={inf} d={d} live /></>}</dd></div>
           ))}
         </dl>
         <figure className="replay-chart">

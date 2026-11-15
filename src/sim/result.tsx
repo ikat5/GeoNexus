@@ -6,6 +6,7 @@ import { Meter, Num, Panel } from '@/components/hud';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { coord, num, shortEarth, shortSite } from '@/lib/format';
 import { Channels, Failure, LinkTo, TaskRows } from './panels';
+import { TwinPair } from './TwinPair';
 import { driveTo, earth, go, relative, S, select, target, the, useStore, worldName } from './store';
 const cap = (x: string) => x[0].toUpperCase() + x.slice(1);
 import type { Result, Sample } from './types';
@@ -33,9 +34,10 @@ function Badge({ r, i }: { r: Result; i: number }) {
 }
 
 export function ResultHeader({ r }: { r: Result }) {
-  const q = r.data?.query?.landform, name = r.state === 'done' && r.data!.candidates.length ? shortEarth(r.resolved[r.pick]) : '…';
+  const q = r.data?.query?.landform, c = r.state === 'done' ? r.data!.candidates[r.pick] : undefined, name = c ? shortEarth(r.resolved[r.pick]) : '…';
   return (
     <header className="result-head">
+      {c && <TwinPair body={S.body} site={[r.lat, r.lon]} twin={[c.lat, c.lon]} />}
       <h1 className="h-display">{shortSite(r.place)} <span className="arrow" aria-label="matched to">→</span> <em className="earth">{name}</em></h1>
       <p className="mono dim">{worldName(S.body)} site · {coord(r.lat, r.lon)}{q ? ` · ${q}` : ''}</p>
     </header>
@@ -72,7 +74,7 @@ export function Anomaly({ r }: { r: Result }) {
   const next = r.data && r.driven + 1 < r.data.candidates.length ? r.driven + 1 : -1;
   return (
     <motion.div className="anomaly" role="status" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.32, ease: [0.23, 1, 0.32, 1] }}>
-      <div className="an-head"><TriangleAlert aria-hidden="true" /><h3>Anomaly detected · {NAMES[k]} <Num value={L[k]} suffix="%" /></h3>
+      <div className="an-head"><TriangleAlert aria-hidden="true" /><h3>Anomaly detected · {NAMES[k]} <Num value={L[k]} suffix="%" live /></h3>
         <button className="icon-btn" onClick={() => setHidden(k)} aria-label="Dismiss"><X /></button></div>
       <p>{reason(k)}</p>
       <div className="an-actions">
@@ -102,9 +104,14 @@ export function ResultMain() {
       <motion.div className="scores" key={r.pick} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.22 }}>
         <Panel className="score"><b className="score-hero"><Num value={c.terrain_fit} /><small>/100</small></b><h3>Terrain fit</h3><p>4 features on matching 16 km patches · {top(c.percentile, d.passed)}</p></Panel>
         <Panel className="score"><b className="score-hero"><Num value={c.learned_similarity} d={2} /></b><h3>Shape similarity</h3><p>{c.learned_similarity == null ? 'Outside the model index (beyond ±80°)' : 'S1 model, cosine (max 1)'}</p></Panel>
-        <Panel className="score"><LinkTo page="drive" className="score-link"><b className="score-hero"><Num value={s.live?.overall} suffix="%" /></b><h3>Live drive similarity ↗</h3><p>From both rovers, last 60 s{d.query.temperature_mode === 'relative' ? ' · temperature relative to each world’s range' : ''}</p></LinkTo></Panel>
+        <Panel className="score"><LinkTo page="drive" className="score-link"><b className="score-hero"><Num value={s.live?.overall} suffix="%" live /></b><h3>Live drive similarity ↗</h3><p>From both rovers, last 60 s{d.query.temperature_mode === 'relative' ? ' · temperature relative to each world’s range' : ''}</p></LinkTo></Panel>
       </motion.div>
       <div className="twin-grid">
+        <Panel className="live-ch">
+          <div className="card-head"><h2>Live drive, per channel</h2><span className="mono dim">{s.live ? 'last 60 s' : 'waiting'}</span></div>
+          {s.live ? <Channels /> : <p className="dim">Both rovers need about two seconds of driving before the channels can be compared.</p>}
+          <Anomaly r={r} />
+        </Panel>
         <Panel className="compare">
           <div className="card-head"><h2>Feature match · match {r.pick + 1}</h2><span className="mono dim">{q} vs {c.landform}</span></div>
           <table className="cmp">
@@ -116,11 +123,6 @@ export function ResultMain() {
             })}</tbody>
           </table>
           {(c.barren_fraction != null || c.aridity_index != null) && <p className="note">Earth cell is {[c.barren_fraction == null ? null : `${num(100 * c.barren_fraction, 0)}% barren land`, c.aridity_index == null ? null : `aridity index ${num(c.aridity_index, 3)} (below 0.05 is hyper-arid)`].filter(Boolean).join(', ')}.</p>}
-        </Panel>
-        <Panel className="live-ch">
-          <div className="card-head"><h2>Live drive, per channel</h2><span className="mono dim">{s.live ? 'last 60 s' : 'waiting'}</span></div>
-          {s.live ? <Channels /> : <p className="dim">Both rovers need about two seconds of driving before the channels can be compared.</p>}
-          <Anomaly r={r} />
         </Panel>
       </div>
       <p className="note">Scores are experimental terrain resemblance from the TerraTwin dataset (release 0.2.0) and its S1 model. They are not a probability, an accuracy or a judgement that a site is suitable. Landform classes come from simple rules on 500 m elevation samples, which cannot resolve features smaller than about 1–2 km (most dunes and small craters).</p>
@@ -169,7 +171,7 @@ export function Candidates() {
           </li>
         ))}
       </ol>
-      <button className="btn primary wide" onClick={() => { driveTo(r.pick); go('drive'); }}>Drive to {shortEarth(r.resolved[r.pick]).split(',')[0]}</button>
+      <button className="btn earth wide" onClick={() => { driveTo(r.pick); go('drive'); }}>Drive to {shortEarth(r.resolved[r.pick]).split(',')[0]}</button>
       <p className="note">{screen}</p>
     </Panel>
   );

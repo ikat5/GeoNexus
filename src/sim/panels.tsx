@@ -133,7 +133,7 @@ export function Channels() {
   return (
     <ul className="channels">
       {CHANNELS.map(([k, label]) => (
-        <li key={k}><span>{label}</span><Meter value={L ? L[k] : null} tone={L && L[k] < 25 ? 'warn' : 'score'} label={`${label} similarity`} /><Num value={L?.[k]} suffix="%" /></li>
+        <li key={k}><span>{label}</span><Meter value={L ? L[k] : null} tone={L && L[k] < 25 ? 'warn' : 'score'} label={`${label} similarity`} /><Num value={L?.[k]} suffix="%" live /></li>
       ))}
     </ul>
   );
@@ -147,6 +147,7 @@ function SpeedGauge() {
     <div className="gauge">
       <div className="ruler" aria-hidden="true">
         {[15, 10, 5, 0].map((v) => <span key={v} style={{ top: mark(v) }}>{v}</span>)}
+        <i className="fill" style={{ height: '100%', transform: `scaleY(${Math.min(max, t?.v ?? 0) / max})` }} />
         <i className="tick target-speed" style={{ top: mark(ROVER.vTarget) }} />
         {t && <i className="tick world" style={{ top: mark(t.v), background: 'var(--target)' }} />}
         {e && <i className="tick world" style={{ top: mark(e.v), background: 'var(--earth)' }} />}
@@ -189,7 +190,7 @@ export function ControlPanel() {
   return (
     <Panel bracket className="control">
       <div className="card-head"><h2>Drive control</h2><span className="mono dim">{s.live ? 'last 60 s' : 'warming up'}</span></div>
-      <div className="overall"><b className="score-hero"><Num value={s.live?.overall} suffix="%" /></b><span>Overall similarity, Earth vs {worldName(s.body)}</span></div>
+      <div className="overall"><b className="score-hero"><Num value={s.live?.overall} suffix="%" live /></b><span>Overall similarity, Earth vs {worldName(s.body)}</span></div>
       <Channels />
       <SpeedGauge />
       <div className="control-row">

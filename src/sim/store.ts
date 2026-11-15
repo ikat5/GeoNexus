@@ -90,7 +90,7 @@ export function setBody(b: Body, first = false) {
   const t = (target = E.createPane(nodes.target, b, { chartsEl: nodes.tCharts, onEvent: onEvent(b), onClick: (lat: number, lon: number, place: Promise<string>) => runModel(b, lat, lon, place) }));
   if (S.view !== '3d') t.setView(S.view);
   if (!S.labels) t.ready.then(() => t.setLabels(false));
-  dock = E.createChartGroup(nodes.dock, E.MERGED, [{ label: 'Earth', color: INK.earth }, { label: worldName(b), color: INK[b] }], { max: 240, legend: false });
+  dock = E.createChartGroup(nodes.dock, E.MERGED, [{ label: 'Earth', color: INK.earth, area: true }, { label: worldName(b), color: INK[b], area: true }], { max: 240, legend: false });
   const t0 = performance.now();
   timer = window.setInterval(() => {
     const e = earth!.history.at(-1), s = t.history.at(-1);

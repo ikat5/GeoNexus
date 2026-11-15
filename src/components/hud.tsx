@@ -1,17 +1,20 @@
 // Small HUD building blocks shared by the landing page and the console.
 import NumberFlow from '@number-flow/react';
 import { cn } from 'cn';
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 const TIMING = { duration: 420, easing: 'cubic-bezier(.23,1,.32,1)' };
-const FAST = { duration: 220, easing: 'cubic-bezier(.23,1,.32,1)' }; // telemetry updates twice a second: settle well before the next
 
 // Every changing number goes through here: tabular mono digits that roll to the new value (NumberFlow skips the roll
 // under prefers-reduced-motion). null -> an em dash.
 export function Num({ value, d = 0, suffix, className, live }: { value: number | null | undefined; d?: number; suffix?: string; className?: string; live?: boolean }) {
+  const [client, setClient] = useState(false); // server render (and the first client pass): plain text, no shadow DOM
+  useEffect(() => setClient(true), []);
   if (value == null || !Number.isFinite(value)) return <span className={cn('num', className)}>—</span>;
+  if (!client) return <span className={cn('num', className)}>{value.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d })}{suffix}</span>;
   return (
-    <NumberFlow className={cn('num', className)} value={value} suffix={suffix} transformTiming={live ? FAST : TIMING} spinTiming={live ? FAST : TIMING}
+    // live telemetry changes twice a second: it swaps instantly (rolling digits at that rate read as noise)
+    <NumberFlow className={cn('num', className)} value={value} suffix={suffix} animated={!live} transformTiming={TIMING} spinTiming={TIMING}
       format={{ minimumFractionDigits: d, maximumFractionDigits: d }} />
   );
 }

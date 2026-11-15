@@ -4,7 +4,7 @@ import { Cpu, Globe2, MapPin, Mountain } from 'lucide-react';
 import { WORLDS } from '../../js/physics.js';
 import { Mark, Num, Panel, Wordmark } from '@/components/hud';
 import { Beams } from './Beam';
-import { Hero, pinHref, SITES, type Site } from './Hero';
+import { Hero, pinHref, SiteRail, SITES, type Site } from './Hero';
 import { Planet } from './planet';
 import { Replay } from './Replay';
 import marsDem from '../../data/dem_mars_1k.png';
@@ -69,7 +69,7 @@ const MARS_STYLE = { kind: 'dem' as const, rim: '#FF7A45', lo: '#240b05', mid: '
 const MOON_STYLE = { kind: 'dem' as const, rim: '#C9C6BC', lo: '#1c1c1b', mid: '#6d6b66', hi: '#e2dfd6', bump: 9 };
 
 export function Landing() {
-  const [site, setSite] = useState<Site>(SITES[0]);
+  const [site, setSite] = useState<Site>(SITES[0]), [pick, setPick] = useState<Site>();
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>
@@ -91,9 +91,10 @@ export function Landing() {
               <a className="btn primary lg" href={pinHref(site)}>Launch mission console</a>
               <a className="btn ghost lg" href="#how">How it works</a>
             </div>
-            <p className="hero-hint"><span className="on-hover">Click anywhere on Mars to retarget the preview.</span><span className="on-touch">Tap Mars or a site name to retarget the preview.</span> The console then runs the full model on <b>{site.name}</b>.</p>
+            <SiteRail site={site} onPick={setPick} />
+            <p className="hero-hint"><span className="on-hover">Or click anywhere on Mars.</span><span className="on-touch">Or tap anywhere on Mars.</span> The console then runs the full model on <b>{site.name}</b>.</p>
           </div>
-          <Hero onSite={setSite} />
+          <Hero onSite={setSite} pick={pick} />
         </section>
 
         <section className="gravity" aria-labelledby="g-title">

@@ -26,19 +26,34 @@ export const earthName = (s: Site) => s.twin.name ?? coord(s.twin.lat, s.twin.lo
 export const pinHref = (s: Site) => `/sim?pin=${s.lat},${s.lon}`;
 export const SITES = twins;
 
-export function Hero({ onSite }: { onSite: (s: Site) => void }) {
+// one segmented rail of named sites, for keyboard and touch (the planet itself is pointer-only)
+export function SiteRail({ site, onPick }: { site: Site; onPick: (s: Site) => void }) {
+  return (
+    <div className="quick" role="group" aria-label="Preview another Mars site">
+      {QUICK.map((n) => {
+        const s = twins.find((t) => t.name === n)!;
+        return <button key={n} className={cn('chip-btn', s.name === site.name && 'on')} aria-pressed={s.name === site.name} onClick={() => onPick(s)}>{n.replace(/ (Crater|Planitia)$/, '')}</button>;
+      })}
+    </div>
+  );
+}
+
+export function Hero({ onSite, pick }: { onSite: (s: Site) => void; pick?: Site }) {
   const box = useRef<HTMLDivElement>(null), marsCv = useRef<HTMLCanvasElement>(null), earthCv = useRef<HTMLCanvasElement>(null);
   const pin = useRef<HTMLSpanElement>(null), tpin = useRef<HTMLSpanElement>(null), arc = useRef<SVGPathElement>(null), dot = useRef<SVGCircleElement>(null);
   const hover = useRef<HTMLDivElement>(null), marsP = useRef<Planet | null>(null), api = useRef<((s: Site) => void) | null>(null);
   const [site, setSite] = useState<Site>(twins[0]);
-  const [score, setScore] = useState<number | null>(null);
+  // the real score is in the prerendered HTML; once JS runs it hides, resets to 0 and counts up when the arc lands
+  const [score, setScore] = useState<number>(twins[0].twin.fit);
+  const [phase, setPhase] = useState<'html' | 'hidden' | 'shown'>('html');
   const [gl, setGl] = useState(true);
 
   useEffect(() => {
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let mars: Planet, earth: Planet;
     try { mars = new Planet(marsCv.current!, marsDem, MARS); earth = new Planet(earthCv.current!, earthNight, EARTH); }
-    catch { setGl(false); setScore(twins[0].twin.fit); return; }
+    catch { setGl(false); return; }
+    if (!reduced) { setScore(0); setPhase('hidden'); }
     marsP.current = mars;
     let cur = twins[0], t0 = performance.now(), dur = reduced ? 0 : 1800, arcAt = t0 + dur + (reduced ? 0 : 250), scored = false, raf = 0, visible = true;
     let mTo = frameMars(cur), eTo = frameEarth(cur), settle = ease;
@@ -68,7 +83,7 @@ export function Hero({ onSite }: { onSite: (s: Site) => void }) {
         dot.current.setAttribute('cx', `${s.x}`); dot.current.setAttribute('cy', `${s.y}`);
         dot.current.style.opacity = !reduced && p >= 1 ? '1' : '0';
       }
-      if (p >= 1 && !scored) { scored = true; setScore(cur.twin.fit); }
+      if (p >= 1 && !scored) { scored = true; setPhase('shown'); setScore(cur.twin.fit); }
       if (visible && (!reduced || now - t0 < 300)) raf = requestAnimationFrame(frame);
     };
     const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
@@ -91,6 +106,7 @@ export function Hero({ onSite }: { onSite: (s: Site) => void }) {
   }, []);
 
   const choose = (s: Site) => { setSite(s); onSite(s); api.current?.(s); };
+  useEffect(() => { if (pick && pick !== site) choose(pick); }, [pick]); // eslint-disable-line react-hooks/exhaustive-deps
   const at = (e: React.MouseEvent<HTMLCanvasElement>) => marsP.current?.unproject(e.nativeEvent.offsetX, e.nativeEvent.offsetY) ?? null;
   const onMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const h = hover.current, ll = e.pointerType === 'mouse' ? at(e) : null;
@@ -113,20 +129,14 @@ export function Hero({ onSite }: { onSite: (s: Site) => void }) {
         onClick={(e) => { const ll = at(e); if (ll) choose(nearest(ll[0], ll[1])); }} />
       <canvas ref={earthCv} className="planet earth" role="img" aria-label="Earth at night, NASA VIIRS Black Marble" />
       <svg className="arc" aria-hidden="true"><path ref={arc} /><circle ref={dot} r="3" /></svg>
-      <span ref={pin} className="pin mars" aria-hidden="true"><i /></span>
-      <span ref={tpin} className="pin earth" aria-hidden="true"><i /></span>
+      <span ref={pin} className="pin mars" aria-hidden="true"><i /><b className="pin-label"><em>{site.name}</em>{coord(site.lat, site.lon, 1)}</b></span>
+      <span ref={tpin} className="pin earth" aria-hidden="true"><i /><b className="pin-label"><em>{earthName(site)}</em>{coord(site.twin.lat, site.twin.lon, 1)}</b></span>
       <div ref={hover} className="hover-read" aria-hidden="true"><b className="mono" /><span /></div>
       <div className="twin-read glass-3 bracket" aria-live="polite">
         <p className="tr-top"><span className="tag-preview">Preview</span><span>TerraTwin match 1, computed ahead</span></p>
         <p className="tr-pair"><span className="ink-mars">{site.name}</span><span className="tr-arrow" aria-label="twin of">↔</span><span className="ink-earth">{earthName(site)}</span></p>
         <p className="mono dim tr-coords">{coord(site.lat, site.lon, 1)} → {coord(site.twin.lat, site.twin.lon, 1)}</p>
-        <div className="tr-score"><b className="score-hero"><Num value={score} /><small>/100</small></b><span>terrain fit{site.twin.shape != null ? ` · shape ${site.twin.shape.toFixed(2)}` : ''} · {site.twin.landform}</span></div>
-      </div>
-      <div className="quick" role="group" aria-label="Preview another Mars site">
-        {QUICK.map((n) => {
-          const s = twins.find((t) => t.name === n)!;
-          return <button key={n} className={cn('chip-btn', s === site && 'on')} aria-pressed={s === site} onClick={() => choose(s)}>{n.replace(/ (Crater|Planitia)$/, '')}</button>;
-        })}
+        <div className="tr-score" data-phase={phase}><b className="score-hero"><Num value={score} /><small>/100</small></b><span>terrain fit{site.twin.shape != null ? ` · shape ${site.twin.shape.toFixed(2)}` : ''} · {site.twin.landform}</span></div>
       </div>
     </div>
   );

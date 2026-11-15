@@ -8,3 +8,6 @@ node_modules/
 dist/
 .jury/
 .shots/
+cook/refs/
+cook/stills/
+cook/compare/

@@ -34,10 +34,13 @@ export function Spark({ values, color, label }: { values: number[]; color: strin
   if (values.length < 2) return <div className="spark spark-empty" aria-label={label}>No telemetry yet</div>;
   const lo = Math.min(...values), hi = Math.max(...values), span = hi - lo || 1;
   const pts = values.map((v, i) => `${((i / (values.length - 1)) * W).toFixed(1)},${(H - 4 - ((v - lo) / span) * (H - 8)).toFixed(1)}`).join(' ');
+  const id = `spark-${color.slice(1)}`;
   return (
     <figure className="spark">
       <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label={`${label}: ${lo.toFixed(0)} to ${hi.toFixed(0)} m`}>
-        <polyline points={pts} fill="none" stroke={color} strokeWidth="1.5" vectorEffect="non-scaling-stroke" style={{ filter: `drop-shadow(0 0 4px ${color})` }} />
+        <defs><linearGradient id={id} x1="0" x2="0" y1="0" y2="1"><stop stopColor={color} stopOpacity=".32" /><stop offset="1" stopColor={color} stopOpacity="0" /></linearGradient></defs>
+        <polygon points={`0,${H} ${pts} ${W},${H}`} fill={`url(#${id})`} />
+        <polyline points={pts} fill="none" stroke={color} strokeWidth="2" vectorEffect="non-scaling-stroke" style={{ filter: `drop-shadow(0 0 5px ${color})` }} />
       </svg>
       <figcaption><span>{label}</span><span className="mono">{fmt(lo)} to {fmt(hi)} m</span></figcaption>
     </figure>
@@ -62,7 +65,7 @@ export function Readouts({ pane, world, layout = 'strip' }: { pane: Pane | null;
         <div key={k} className="ro">
           <dt>{k}</dt>
           <dd>{k === 'Air density' && vac ? <span className="num">Vacuum</span> : <Num value={r ? v : null} d={d} live />}{!(k === 'Air density' && vac) && <small>{unit}</small>}</dd>
-          <span className="ro-sub">{r ? s : '—'}</span>
+          <dd className="ro-sub">{r ? s : '—'}</dd>
         </div>
       ))}
     </dl>

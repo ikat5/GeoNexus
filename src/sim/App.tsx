@@ -132,6 +132,7 @@ function Deck({ float }: { float: boolean }) {
         <Rail side="right" page={P}><Candidates /></Rail>
       </>}
       {P === 'drive' && <>
+        <h1 className="sr-only">Live drive: Earth vs {worldName(s.body)}</h1>
         <div className="center drive-center"><Stage mode="drive" /><DockCharts /></div>
         <Rail side="right" page={P}><ControlPanel /></Rail>
       </>}

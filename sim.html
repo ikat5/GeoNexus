@@ -6,6 +6,10 @@
   <title>Explore · GeoNexus</title>
   <meta name="description" content="GeoNexus mission console: pick a site on Mars or the Moon, meet its terrain twin on Earth from the TerraTwin model, and drive a rover at both.">
   <meta name="theme-color" content="#07090C">
+  <meta property="og:title" content="GeoNexus mission console">
+  <meta property="og:description" content="Pick a site on Mars or the Moon, meet its terrain twin on Earth, and drive a rover at both.">
+  <meta property="og:image" content="/og.png">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/cesium@1.140.0/Build/Cesium/Cesium.js">
@@ -16,10 +20,15 @@
     #boot { position: fixed; left: 50%; top: 52%; width: min(56vh, 46vw); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%;
       background: radial-gradient(circle at 36% 34%, #C4552B, #6E2412 58%, #1B0A06 100%); box-shadow: 0 0 60px rgba(255, 122, 69, .18);
       view-transition-name: target-globe; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   </style>
 </head>
 <body>
-  <div id="root"><div id="boot" aria-hidden="true"></div></div>
+  <div id="root">
+    <main><h1 class="sr-only">GeoNexus mission console</h1>
+      <p class="sr-only">Pick a site on Mars or the Moon, meet its terrain twin on Earth from the TerraTwin model, then drive a rover at both and compare what they measure. Needs JavaScript and WebGL.</p>
+      <div id="boot" aria-hidden="true"></div></main>
+  </div>
   <script type="module" src="/src/sim/main.tsx"></script>
 </body>
 </html>

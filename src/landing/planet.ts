@@ -23,7 +23,7 @@ void main() {
   vec2 dx = dFdx(raw), dy = dFdy(raw);
   dx.x -= floor(dx.x + 0.5); dy.x -= floor(dy.x + 0.5);                    // no mip seam where longitude wraps
   vec2 uv = vec2(fract(raw.x), raw.y);
-  vec3 L = normalize(vec3(-0.62, 0.42, 0.66));                              // sun: upper left, in front
+  vec3 L = normalize(vec3(0.5, 0.42, 0.6));                                 // sun: upper right (toward Earth), raking
   vec3 col;
   if (uKind < 0.5) {
     float h = textureGrad(uTex, uv, dx, dy).r;
@@ -47,7 +47,7 @@ void main() {
   vec2 gd = abs(fract(g - 0.5) - 0.5) / max(fwidth(g), 1e-4);
   col += (1.0 - min(min(gd.x, gd.y), 1.0)) * 0.05 * uRim * smoothstep(0.1, 0.6, n.z);
   float fres = pow(1.0 - n.z, 3.0);
-  col += uRim * fres * 0.55;
+  col += uRim * fres * (0.18 + 0.95 * max(dot(n, L), 0.0)); // the lit limb glows, the night limb barely
   float a = smoothstep(uR + edge, uR - edge, d);
   o = vec4(col * a + uRim * halo * (1.0 - a), a + halo * (1.0 - a));
 }`;
@@ -95,6 +95,7 @@ export class Planet {
     }).catch(() => {}); // no texture: the CSS fallback disc under the canvas stays visible
   }
   get loaded() { return this.ready; }
+  dispose() { this.ready = false; this.gl.getExtension('WEBGL_lose_context')?.loseContext(); } // frees the context slot now
   resize() {
     const dpr = Math.min(2, devicePixelRatio || 1), c = this.canvas, w = Math.round(c.clientWidth * dpr), h = Math.round(c.clientHeight * dpr);
     if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }

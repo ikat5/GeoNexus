@@ -47,7 +47,7 @@ function TopBar({ phone }: { phone: boolean }) {
       <Wordmark compact={phone} />
       {!phone && <StepNav />}
       <div className="tb-right">
-        <button className="cmd-btn" onClick={() => setCmd(true)} aria-label="Jump to a site" aria-keyshortcuts="Meta+K Control+K">
+        <button className="cmd-btn" onClick={() => setCmd(true)} aria-label={phone ? 'Jump to a site' : undefined} aria-keyshortcuts="Meta+K Control+K">
           <Search aria-hidden="true" />{!phone && <><span>Jump to a site</span><kbd>{isMac ? '⌘' : 'Ctrl'} K</kbd></>}
         </button>
         <ToggleGroup className="seg" value={[s.body]} onValueChange={(v) => v[0] && setBody(v[0] as Body)} aria-label="Target world" disabled={!s.ready}>

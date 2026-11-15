@@ -1,10 +1,10 @@
-# Planetary Rover Sim — Work Log
+# GeoNexus — Work Log
 
-Run: `.venv/bin/python serve.py` in this folder, open http://localhost:8642 (landing page; the simulator is at /sim) (needs internet for CDN libraries and map tiles).
+**60-second demo path:** open `/` → watch Mars settle and the twin arc land on Earth (the model's terrain fit counts up) → click another spot on Mars or a site chip to retarget → **Launch mission console** (opens `/sim?pin=…` and runs the real model on that site) → press ⌘K / Ctrl K, type "Jezero", Enter → the pin settles and the task rows resolve with real timings → **Model result** (Mars and Earth twin pair, scores, feature match) → **Live drive** (glowing Earth-vs-Mars charts, D-pad camera, Pause) → **Sensors** (measured vs inferred, gap shaded) → switch to the Moon and pin Apollo 11 for the vacuum anomaly card.
+
+Build: `npm ci && npm run build` (Vite → `dist/`, landing prerendered). Run: `.venv/bin/python serve.py`, open http://localhost:8642 (landing; console at /sim). Dev: `npm run dev` (port 5173, proxies /api to serve.py on 8642).
 Plain `python3 serve.py` still serves the page, but the model API then answers 503 because numpy/duckdb live in `.venv`.
-Model check: `.venv/bin/python serve.py --check`.
-Modes are also reachable by URL hash: `#earth`, `#moon`, `#mars`, `#earth_mars`, `#earth_moon`.
-Tests: `node tests/selfcheck.mjs`. Data refresh: `node scripts/fetch_dem.mjs`, `node scripts/fetch_labels.mjs`.
+Model check: `.venv/bin/python serve.py --check`. Tests: `node tests/selfcheck.mjs`. Data refresh: `node scripts/fetch_dem.mjs`, `node scripts/fetch_labels.mjs`, `node scripts/record_trace.mjs`, `.venv/bin/python scripts/hero_twins.py`.
 
 ---
 
@@ -205,3 +205,28 @@ New package `matching/`; `serve.py` now calls `matching.pipeline.match` (the old
 - Docker Spaces turned out to be paid: replaced by a Gradio-SDK Space whose `huggingface/app.py` downloads the GitHub zip + dataset and execs serve.py on 7860 (no Gradio UI). Space README needs `python_version: "3.12"`; all .py files parse as 3.12.
 - LIVE: https://ikat5-geonexus.hf.space (Gradio-SDK Space; free accounts only get ZeroGPU hardware, CPU basic needs PRO). ZeroGPU stops a Space with no @spaces.GPU function, so `huggingface/app.py` declares a no-op one and sends the startup report itself (`spaces.zero.startup` in spaces 0.51.3, which HF force-installs). Secret HF_TOKEN set via API. Verified live: /, /sim, /js/main.js 200; Avernus Colles query returns the same 5 knobby/fractured matches.
 - Dataset repo github.com/ikat5/mars_moon_earth_dataset (made public by the user) cleaned in commit 1ea8aeb: kept earth/mars/moon_integrated_dataset, prepared/, sources/, .gitattributes, .gitignore; moved analysis/DATA_CATALOG.md and submission/ATTRIBUTION.md to the root; removed code and project docs (processing, ml, frontend, analysis, submission, .github, Dockerfile...). New README lists every source link. Done in a scratch clone (LFS skipped); local vendor/ clone untouched and still has the code. Consequence: scripts/render_build.sh (clones that repo for processing/ml) no longer works; the HF Space uses the HF copy and is unaffected.
+
+## 2026-11-15 · Session 11 — mission-console redesign (branch `redesign`, not merged)
+
+Brief: `frontend redesign prompt/GeoNexus_redesign_prompt.md` (git-ignored with its reference image and video). Design system and decisions: `DESIGN.md`. Critic rounds: `cook/ROUNDS.md`.
+
+### Stack and structure
+- Vite 8 + React 19 + TypeScript + Tailwind v4 + shadcn/ui on **Base UI**; cmdk (⌘K), Sonner (toasts), Vaul (phone sheet), NumberFlow (numbers), motion (step indicator, panel entry). Two pages: `index.html` (landing, prerendered at build by `scripts/prerender.mjs`) and `sim.html` (console).
+- Science modules untouched in logic: `js/physics.js`, `rover.js` (only a `stalls` counter for the toast), `similarity.js`, `dem_sampler.js`, `labels.js` (labels return a show/hide toggle), `globe.js`. `matching/pipeline.py` additionally reports patch and feature timings.
+- `js/main.js` ported to `src/sim/store.ts` (same flow, plus remembering the user's own Earth site across world switches, which main.js lost). `js/pane.js` gained `pin`, `pickAt`, `placeAt`, view presets, D-pad nudges and an event hook; its stat tiles moved to React.
+- Cesium and Chart.js load only on /sim (Cesium from its CDN after the shell paints). Persistent Cesium/Chart.js nodes are moved between layouts by `<Host>` so canvases are never recreated.
+- `serve.py` serves `dist/` (hashed assets cached a year, the rest no-store), `/data/*` from `data/` (traversal-safe), `/sim*` → sim.html, `/api/analog` unchanged. `scripts/build_frontend.sh` builds on Render (`render_build.sh`) and in the HF Space (`app.py`), fetching Node 22 when the image has none. **Neither deployment was run from here**: the live HF Space builds `main`, which this branch does not touch.
+
+### What changed for visitors
+- Landing: WebGL2 Mars shaded from our MOLA heights (hillshade, raking light, lit limb), Earth from NASA VIIRS Black Marble (GIBS), twin arc to the model's match, NumberFlow score, click or site rail to retarget (snaps to 20 sites precomputed with the real matcher: `data/hero_twins.json`, labelled "preview"), gravity gauges with real hop times (2 m/s hop: 0.41 / 1.08 / 2.47 s), Animated Beam pipeline, a 20 s replay of the real rover over MOLA at Gale (`data/trace_gale.json`), world asset cards, full credits. Gale's real model twin is Fars Province, Iran (fit 61), not Atacama: the old "Gale ↔ Atacama 59%" was a drive similarity at a hand-picked preset, so it is not shown as a model result.
+- Console: top bar (step pills with a sliding indicator, ⌘K, Mars/Moon, UTC), explore with crosshair + lat/lon + IAU name under the cursor and a contracting pin ring, task rows with real stage timings, twin summary, active asset with sparkline, Earth twin card; result page with a Mars/Moon + Earth planet pair, scores, live per-channel bars and an amber anomaly card with a plain reason and "Drive match N instead"; live drive with HUD frames, glowing area charts, speed ruler, glass D-pad camera, Pause; sensors with gap-shaded measured vs inferred; bottom bar with 2D (top-down camera) / 3D / Ground, Live pill, T+ clock. Phone: full-bleed globe, Earth inset, Vaul sheet. Toasts only for real events (site pinned, twin found, weather offline, rover stalled, model unavailable).
+
+### Verified (production build, Chrome)
+- Every step on Mars and the Moon; ⌘K sites, Earth analogs and actions; select/drive-to match; pause/resume; view presets; D-pad; sensors toggle; world switch and back (rovers restored, incl. a user-picked Earth site); reset; Earth click; `?pin=` deep link; empty states; model 503 (failure card + toast); weather offline (ISA chip); 160-character place names; 0/100 scores; phone (390 px) and short laptop (1366×593). Zero console errors or warnings over landing → launch → all four steps.
+- Jury evidence (Playwright, round-2 build): landing LCP 268 ms desktop / 2.24 s throttled phone, CLS 0.051 / 0.027, axe 0 serious, audit 0 FAIL (warnings: no canonical/sitemap, they need the production domain). Console LCP on a throttled phone is 14 s (Cesium is ~4 MB from the CDN); not in the prompt's landing target, not solved.
+- `node tests/selfcheck.mjs` ok after every phase; `serve.py --check` not re-run (matcher logic unchanged; 20 real queries ran via scripts/hero_twins.py).
+
+### Not done / limits
+- Liveline evaluated and not used (no log axis for air density, no gap shading); Chart.js restyled instead.
+- Critic bar of 9/10 not reached: see `cook/ROUNDS.md` (round 1 ≈ 4.5–6, round 2 ≈ 5–7.5). Weakest: light on the Cesium close-ups and materials.
+- Not done: inspo-guided canonical/sitemap (no production URL known), Lighthouse proper (Playwright vitals used), agent-browser (the Chrome DevTools MCP and Playwright did the QA), Aceternity effect beyond a CSS grid, a ffmpeg side-by-side (running a downloaded ffmpeg binary was blocked).

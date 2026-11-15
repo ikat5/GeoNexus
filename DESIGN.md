@@ -155,3 +155,15 @@ SIM (≥1280 px)
 globe is shaded from our own MOLA heights (not a stock texture), every number on the page is a
 real measured or modelled value with its unit, the twin arc is the product's actual mechanism, and
 the display face is squared Oxanium instead of the category's default grotesk.
+
+## 6 · Decisions made while building (2026-11-15)
+
+- **Glass is teal-tinted and denser than first planned** (critics read the first neutral glass as opaque charcoal): fills `rgba(120,215,230,.1→.03)` over `rgba(7,13,17,.7)`, a cyan-white hairline, a specular line along each slab's top edge.
+- **HUD corners are four 12 px L-marks**, not two radius-following strokes (those read as a render glitch).
+- **Primary buttons are tinted glass** in the world's colour (Earth actions in cyan), not solid pills; scores are white digits with a mint glow, so mint stays the single score accent.
+- **Live telemetry (2 Hz) swaps digits; only discrete numbers roll.** NumberFlow everywhere, `animated={false}` for live values.
+- **Mars close-ups get an amber colour-blend wash** over the canvas: the MRO CTX mosaic is panchromatic, so close-ups read as grey Moon without it. A vignette darkens every globe frame.
+- **"2D" is a top-down chase camera**, not Cesium's 2D scene mode (which needs a per-world map projection and breaks picking on non-WGS84 ellipsoids).
+- **Chart.js, not Liveline**: no log axis (air density) and no gap shading in Liveline.
+- **The landing is prerendered at build** (react-dom/server) and hydrated: LCP is the h1 in the HTML.
+- **Hero numbers are honest**: Gale's model twin is Fars Province, Iran (fit 61); the old "Gale ↔ Atacama 59%" was a drive similarity at a hand-picked preset and is not shown.

@@ -10,8 +10,6 @@ section[id] { scroll-margin-top: 24px; }
 .site-nav nav a:not(.btn) { position: relative; }
 .site-nav nav a:not(.btn)::after { content: ''; position: absolute; left: 14px; right: 14px; bottom: 9px; height: 1px; background: var(--mars); transform: scaleX(0); transform-origin: left; transition: transform 220ms var(--ease-out); }
 @media (hover: hover) { .site-nav nav a:not(.btn):hover { color: var(--ink); } .site-nav nav a:not(.btn):hover::after { transform: scaleX(1); } }
-.wordmark .mark { transition: transform 300ms var(--ease-out); }
-@media (hover: hover) { .wordmark:hover .mark { transform: rotate(-24deg); } }
 .site-nav .btn { margin-left: 8px; }
 .btn.lg { min-height: 52px; padding: 0 26px; font-size: 15.5px; }
 

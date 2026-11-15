@@ -193,3 +193,10 @@ New package `matching/`; `serve.py` now calls `matching.pipeline.match` (the old
 - The OPM fallback for Mars imagery was skipped; Trek MDIM + CTX was used instead.
 - Similarity compares statistics, not co-located terrain, because the two drives are independent.
 - Not tested on phones (telemetry columns hide below 768 px; panes stack vertically).
+
+## Session 10 — Render deployment
+- Pushed to github.com/ikat5/GeoNexus (public, branch main). `.gitignore` keeps `.venv/`, `.cache/` and the private `vendor/` dataset out.
+- `serve.py` binds 0.0.0.0:$PORT when PORT is set (Render); local runs unchanged (127.0.0.1:8642).
+- `render.yaml` (Blueprint, plan standard: the server holds ~1.1 GB RAM), `requirements.txt`, `scripts/render_build.sh`.
+- The build fetches the private dataset only if the `DATASET_TOKEN` secret is set (fine-grained GitHub token, read-only Contents on mars_moon_earth_dataset): shallow clone, LFS pull of the three 0.2.0 tables (~310 MB), and the `s1_index.npz` release asset (checksum-checked). Without the token, the site deploys and `/api/analog` returns 503 "Model unavailable".
+- Tested locally: script syntax, release asset lookup, PORT startup without vendor (/ and /sim 200, /api 503, /vendor 404). Not tested: an actual Render build.

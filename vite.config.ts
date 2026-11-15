@@ -7,12 +7,13 @@ import tailwindcss from '@tailwindcss/vite';
 
 // dev and `vite preview`: /sim/* is the console (serve.py does the same in production)
 const simRoutes = (s: { middlewares: { use(f: (req: { url?: string }, res: unknown, next: () => void) => void): void } }) => {
-  s.middlewares.use((req, _res, next) => { if (/^\/sim(\/[a-z]*)?\/?(\?|$)/.test(req.url ?? '')) req.url = `/sim.html${req.url!.includes('?') ? req.url!.slice(req.url!.indexOf('?')) : ''}`; next(); });
+  s.middlewares.use((req, _res, next) => {
+    if (/^\/discoveries\/?(\?|$)/.test(req.url ?? '')) req.url = `/discoveries.html${req.url!.includes('?') ? req.url!.slice(req.url!.indexOf('?')) : ''}`; if (/^\/sim(\/[a-z]*)?\/?(\?|$)/.test(req.url ?? '')) req.url = `/sim.html${req.url!.includes('?') ? req.url!.slice(req.url!.indexOf('?')) : ''}`; next(); });
 };
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), { name: 'sim-routes', configureServer: simRoutes, configurePreviewServer: simRoutes }],
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
-  build: { rollupOptions: { input: { index: 'index.html', sim: 'sim.html' } } },
+  build: { rollupOptions: { input: { index: 'index.html', sim: 'sim.html', discoveries: 'discoveries.html' } } },
   server: { proxy: { '/api': 'http://127.0.0.1:8642' } },
 });

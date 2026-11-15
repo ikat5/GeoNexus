@@ -7,6 +7,7 @@ import { Beams } from './Beam';
 import { Hero, pinHref, SiteRail, SITES, type Site } from './Hero';
 import { Planet } from './planet';
 import { Replay } from './Replay';
+import atlas from '../../data/discoveries_summary.json';
 import marsDem from '../../data/dem_mars_1k.png';
 import moonDem from '../../data/dem_moon_1k.png';
 
@@ -79,6 +80,7 @@ export function Landing() {
           <a href="#how">How it works</a>
           <a href="#readouts">Readouts</a>
           <a href="#worlds">Worlds</a>
+          <a href="/discoveries">Discoveries</a>
           <a className="btn primary" href="/sim">Launch mission console</a>
         </nav>
       </header>
@@ -121,6 +123,22 @@ export function Landing() {
             </ul>
           </div>
           <Replay />
+        </section>
+
+        <section className="wrap block" id="atlas" aria-labelledby="atlas-tease-title">
+          <h2 id="atlas-tease-title" className="h-display sec-title">It found NASA’s sites. Then <em className="ink-mars"><Num value={atlas.n_new} /></em> more.</h2>
+          <p className="lede sec-lede">We ran the matcher on {atlas.n_queries} sites across Mars and the Moon. It rediscovered {atlas.validation.known_sites_rediscovered} of {atlas.validation.known_sites} analog sites already in use, without being told where they are, and kept pointing at places nobody uses yet. These are candidates, not confirmed sites.</p>
+          <div className="atlas-tease">
+            {atlas.top.slice(0, 3).map((c) => (
+              <a key={c.id} className="asset-card glass-2 tease-card" href={`/discoveries?c=${c.id}`}>
+                <span className="cls new">New candidate</span>
+                <h3 className="h-display">{c.name}{c.country ? `, ${c.country}` : ''}</h3>
+                <p className="mono dim">{c.twin_count} twin{c.twin_count > 1 ? 's' : ''} on {c.bodies === 'both' ? 'Mars and the Moon' : c.bodies === 'mars' ? 'Mars' : 'the Moon'} · {c.landform}</p>
+                <p className="dim small">{c.distance_km != null ? `${c.distance_km.toLocaleString('en-US')} km from the nearest known analog site` : ''}</p>
+              </a>
+            ))}
+          </div>
+          <div className="cta"><a className="btn primary lg" href="/discoveries?surprise=1">Surprise me</a><a className="btn ghost lg" href="/discoveries">Open the Discovery Atlas</a></div>
         </section>
 
         <section className="wrap block" id="worlds" aria-labelledby="w-title">

@@ -1,6 +1,6 @@
 // ⌘K: jump to any IAU feature or landing site on the current world, an Earth analog site, or run an action.
 import { useEffect, useMemo, useState } from 'react';
-import { Globe2, MapPin, Pause, Play, Rocket, Tags, Footprints } from 'lucide-react';
+import { Dices, Globe2, MapPin, Pause, Play, Rocket, Tags, Footprints, Sparkles } from 'lucide-react';
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandShortcut } from '@/components/ui/command';
 import { coord } from '@/lib/format';
 import { earth, go, LABEL, ORDER, paused, pinEarth, pinTarget, S, setBody, setCmd, setLabels, setPaused, target, useStore, worldName } from './store';
@@ -8,7 +8,10 @@ import type { Feature } from './types';
 
 export function CommandMenu() {
   const s = useStore();
-  const [q, setQ] = useState('');
+  const [q, setQ] = useState(''), [disc, setDisc] = useState<{ id: string; name: string }[]>([]);
+  useEffect(() => { // the atlas's top places, for "Go to discovery" (small static file written by build_discoveries.py)
+    if (s.cmd && !disc.length) fetch('/data/discoveries_summary.json').then((r) => (r.ok ? r.json() : null)).then((j) => j && setDisc(j.top)).catch(() => {});
+  }, [s.cmd]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const key = (e: KeyboardEvent) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setCmd(!S.cmd); } };
     addEventListener('keydown', key);
@@ -24,6 +27,8 @@ export function CommandMenu() {
   const analogs = (earth?.features ?? []).filter((f) => f[4] === 'Analog site' && (!ql || f[0].toLowerCase().includes(ql)));
   const other = s.body === 'mars' ? 'moon' : 'mars';
   const actions = [
+    { label: 'Surprise me: a new candidate analog site', icon: Dices, run: () => { location.href = '/discoveries?surprise=1'; } },
+    ...disc.map((d) => ({ label: `Go to discovery: ${d.name}`, icon: Sparkles, run: () => { location.href = `/discoveries?c=${d.id}`; } })),
     { label: `Switch to ${worldName(other)}`, icon: Globe2, run: () => setBody(other) },
     { label: paused() ? 'Resume drive' : 'Pause drive', icon: paused() ? Play : Pause, run: () => setPaused(!paused()) },
     { label: s.labels ? 'Hide feature labels' : 'Show feature labels', icon: Tags, run: () => setLabels(!s.labels) },

@@ -189,3 +189,10 @@ section[id] { scroll-margin-top: 24px; }
   .thumb-wrap { width: 140px; }
   .site-foot { grid-template-columns: 1fr; }
 }
+
+/* Discovery Atlas teaser */
+.atlas-tease { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 32px; }
+.tease-card { display: grid; grid-template-columns: 1fr; align-content: start; gap: 8px; }
+.tease-card h3 { font-size: 22px; overflow-wrap: anywhere; }
+.tease-card .cls { justify-self: start; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #FFD3BF; border: 1px solid rgba(255, 122, 69, .6); background: rgba(255, 122, 69, .12); }
+@media (max-width: 1080px) { .atlas-tease { grid-template-columns: 1fr; } }

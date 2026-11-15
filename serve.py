@@ -16,11 +16,8 @@ NO_AREA_GATE = [0.0, 1e12]
 WIDE_LAT, POLAR_LAT, CAP_KM = 60.0, 65.0, 3336.0  # CAP_KM: great-circle distance from a pole to latitude 60
 # Published polar / cryospheric planetary-analog field sites. Coordinates as supplied, except Summit Camp, which is
 # listed separately at its real position (72.58N) because 82N 30W is Peary Land.
-ANALOGS = [
-    ('McMurdo Dry Valleys, Antarctica', -77.85, 161.00), ('Devon Island (Haughton Crater), Canada', 75.38, -89.68),
-    ('Svalbard, Norway', 78.22, 15.63), ('Axel Heiberg Island, Canada', 79.40, -90.80),
-    ('Peary Land, Greenland', 82.00, -30.00), ('Summit Camp, Greenland', 72.58, -38.46),
-]
+ANALOGS = [(x['name'], x['lat'], x['lon']) for x in json.loads((ROOT / 'data' / 'known_analogs.json').read_text())['sites']
+           if abs(x['lat']) >= WIDE_LAT]  # polar named sites, from the single curated list
 
 
 def build_profiles():
@@ -132,8 +129,13 @@ def analog(body, lat, lon):
     """The Earth-twin matcher: metric patches, screening ladder, two-stage re-rank (matching/pipeline.py)."""
     from matching import pipeline
     pipeline._index = INDEX  # share the 150 MB index instead of loading it twice
+    from matching import novelty
     with _lock:
-        return clean(pipeline.match(body, lat, lon))
+        r = clean(pipeline.match(body, lat, lon))
+    for c in r.get('candidates', []):  # "known analog site" / "new candidate" badges, same rule as the Discovery Atlas
+        cls, site, d = novelty.classify(c['lat'], c['lon'])
+        c['novelty'] = {'class': cls, 'nearest_known': site and {'name': site['name'], 'distance_km': round(d)}}
+    return r
 
 
 def legacy_analog(body, lat, lon):
@@ -188,6 +190,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         url = urllib.parse.urlsplit(self.path)
         if url.path.startswith(PRIVATE):
             return self.send_error(404)
+        if url.path in ('/discoveries', '/discoveries/'):  # the Discovery Atlas (static JSON only)
+            self.path = '/discoveries.html'
+            return super().do_GET()
         if url.path == '/sim' or url.path.startswith('/sim/'):  # client-side routes of the simulator
             self.path = '/sim.html'
             return super().do_GET()

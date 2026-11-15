@@ -21,6 +21,7 @@ export interface Candidate {
   feature_id: string; lat: number; lon: number; terrain_fit: number; learned_similarity: number | null; percentile: number;
   landform: string; confidence: 'high' | 'medium' | 'low'; near_analog: string | null; comparisons: Comparison[];
   barren_fraction: number | null; aridity_index: number | null;
+  novelty?: { class: 'known' | 'near_known' | 'new'; nearest_known: { name: string; distance_km: number } | null };
 }
 export interface Analog {
   status: string; error?: string; candidates: Candidate[]; screened: number; passed: number;

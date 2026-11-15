@@ -1,5 +1,12 @@
 """Every weight, threshold and flag of the Earth-twin matcher, in one place."""
 
+def _known():
+    import json
+    from pathlib import Path
+    f = Path(__file__).resolve().parent.parent / 'data' / 'known_analogs.json'
+    return json.loads(f.read_text())['sites'] if f.exists() else []
+
+
 CONFIG = {
     # --- Phase 1: metric patches (same geometry the S1 model was trained on: ml/patches.py SIZE, SPACING_M) ---
     'patch_size_px': 32,            # samples per side
@@ -24,13 +31,8 @@ CONFIG = {
     'min_results': 5,               # a ladder step that yields fewer final matches hands over to the next step
     'reference_analog_radius_km': 150.0,
     # Known polar analog field sites: used for "near <site>" hints and tests, never forced into results.
-    'reference_analogs': [
-        ('McMurdo Dry Valleys, Antarctica', -77.5, 162.0),
-        ('Haughton Crater, Devon Island', 75.38, -89.68),
-        ('Bockfjorden, Svalbard', 79.4, 13.3),
-        ('Axel Heiberg Island', 79.4, -90.8),
-        ('Peary Land, Greenland', 82.5, -30.0),
-    ],
+    # every curated, sourced known analog site (data/known_analogs.json is the single source of truth); hints only
+    'reference_analogs': [(x['name'], x['lat'], x['lon']) for x in _known()],
 
     # --- Phase 3: landform descriptors and the rule-based class ---
     'pit_min_depth_m': 8.0,         # a pit is a local minimum at least this far below its 5x5 neighbourhood mean

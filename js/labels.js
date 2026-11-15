@@ -8,7 +8,11 @@ export async function loadFeatures(worldKey) {
   try {
     const res = await fetch(`/data/labels_${worldKey}.json`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
+    const list = await res.json();
+    if (worldKey !== 'earth') return list;
+    // Earth analog presets come from the single curated list of known analog sites
+    const k = await fetch('/data/known_analogs.json').then((r) => (r.ok ? r.json() : { sites: [] })).catch(() => ({ sites: [] }));
+    return [...list.filter((f) => f[4] !== 'Analog site'), ...k.sites.map((x) => [x.name, x.lat, x.lon, 2 * x.radius_km, 'Analog site'])];
   } catch (e) {
     console.warn(`data/labels_${worldKey}.json unavailable (run node scripts/fetch_labels.mjs)`, e);
     return [];

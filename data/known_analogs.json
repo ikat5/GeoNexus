@@ -1,0 +1,660 @@
+{
+ "version": "1",
+ "notes": "Each site has a source that was opened and describes it as a Mars or Moon analog. extent_km is the estimated real extent; radius_km = max(extent_km, 10) because one match is a 16 km elevation patch, so a smaller radius could never count a match as on-site. Dropped for lack of a qualifying source: Lake Vostok, Kalahari/Namib, Tibetan Plateau (general), Manicouagan, Gobi, Icelandic outflow channels, Tolbachik; Wadi Rum (its NASA page only compares colours).",
+ "sites": [
+  {
+   "id": "haughton-crater-devon-island",
+   "name": "Haughton Crater, Devon Island",
+   "country": "Canada",
+   "lat": 75.38,
+   "lon": -89.68,
+   "extent_km": 20.0,
+   "radius_km": 20.0,
+   "bodies": [
+    "mars",
+    "moon"
+   ],
+   "used_by": [
+    "NASA / Mars Institute (Haughton-Mars Project)"
+   ],
+   "use": "Arctic crater exploration field tests",
+   "source_url": "https://www.marsinstitute.no/hmp",
+   "source_title": "Mars Institute - HMP"
+  },
+  {
+   "id": "mcmurdo-dry-valleys",
+   "name": "McMurdo Dry Valleys",
+   "country": "Antarctica",
+   "lat": -77.5,
+   "lon": 162.0,
+   "extent_km": 50.0,
+   "radius_km": 50.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA (Phoenix analog study)"
+   ],
+   "use": "Phoenix landing-site soil analog",
+   "source_url": "https://ntrs.nasa.gov/citations/20100003844",
+   "source_title": "McMurdo Dry Valleys, Antarctica - A Mars Phoenix Mission Analog"
+  },
+  {
+   "id": "atacama-desert-yungay",
+   "name": "Atacama Desert (Yungay)",
+   "country": "Chile",
+   "lat": -24.08,
+   "lon": -69.92,
+   "extent_km": 500.0,
+   "radius_km": 500.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA (ARADS)"
+   ],
+   "use": "life-detection drill tests",
+   "source_url": "https://astrobiology.nasa.gov/news/nasa-tests-life-detection-drill-in-the-atacama-desert/",
+   "source_title": "NASA Tests Life-Detection Drill in the Mars-Like Atacama Desert"
+  },
+  {
+   "id": "mojave-desert-marsokhod-field-test",
+   "name": "Mojave Desert (Marsokhod field test)",
+   "country": "USA",
+   "lat": 35.0,
+   "lon": -116.0,
+   "extent_km": 150.0,
+   "radius_km": 150.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA/JPL (Marsokhod 1999)"
+   ],
+   "use": "rover field operations tests",
+   "source_url": "https://www.usgs.gov/publications/geological-characterization-remote-field-sites-using-visible-and-infrared-spectroscopy",
+   "source_title": "Geological characterization of remote field sites using visible and infrared spectroscopy: Results from the 1999 Marsokhod field test"
+  },
+  {
+   "id": "dumont-dunes",
+   "name": "Dumont Dunes",
+   "country": "USA",
+   "lat": 35.68,
+   "lon": -116.22,
+   "extent_km": 5.0,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA/JPL"
+   ],
+   "use": "Curiosity dune-driving tests",
+   "source_url": "https://www.jpl.nasa.gov/news/mojave-desert-tests-prepare-for-nasa-mars-roving/",
+   "source_title": "Mojave Desert Tests Prepare for NASA Mars Roving"
+  },
+  {
+   "id": "meteor-crater-arizona",
+   "name": "Meteor Crater, Arizona",
+   "country": "USA",
+   "lat": 35.03,
+   "lon": -111.02,
+   "extent_km": 1.2,
+   "radius_km": 10.0,
+   "bodies": [
+    "moon"
+   ],
+   "used_by": [
+    "USGS / NASA Apollo"
+   ],
+   "use": "astronaut geology training",
+   "source_url": "https://www.usgs.gov/node/279552",
+   "source_title": "Terrestrial Analogs: Using Earth to Study Space"
+  },
+  {
+   "id": "sp-crater-arizona",
+   "name": "SP Crater, Arizona",
+   "country": "USA",
+   "lat": 35.58,
+   "lon": -111.63,
+   "extent_km": 1.5,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars",
+    "moon"
+   ],
+   "used_by": [
+    "USGS / NASA"
+   ],
+   "use": "traverse and technology tests",
+   "source_url": "https://www.usgs.gov/node/279552",
+   "source_title": "Terrestrial Analogs: Using Earth to Study Space"
+  },
+  {
+   "id": "black-point-lava-flow-arizona",
+   "name": "Black Point Lava Flow, Arizona",
+   "country": "USA",
+   "lat": 35.68,
+   "lon": -111.35,
+   "extent_km": 20.0,
+   "radius_km": 20.0,
+   "bodies": [
+    "moon"
+   ],
+   "used_by": [
+    "NASA Desert RATS"
+   ],
+   "use": "analog test site, regolith simulant",
+   "source_url": "https://ntrs.nasa.gov/citations/20100024529",
+   "source_title": "Preliminary Geological Findings on the BP-1 Simulant"
+  },
+  {
+   "id": "cinder-lake-crater-field-arizona",
+   "name": "Cinder Lake crater field, Arizona",
+   "country": "USA",
+   "lat": 35.29,
+   "lon": -111.44,
+   "extent_km": 0.5,
+   "radius_km": 10.0,
+   "bodies": [
+    "moon"
+   ],
+   "used_by": [
+    "USGS / NASA Apollo"
+   ],
+   "use": "built lunar crater training field",
+   "source_url": "https://www.usgs.gov/node/279552",
+   "source_title": "Terrestrial Analogs: Using Earth to Study Space"
+  },
+  {
+   "id": "craters-of-the-moon-idaho",
+   "name": "Craters of the Moon, Idaho",
+   "country": "USA",
+   "lat": 43.42,
+   "lon": -113.52,
+   "extent_km": 40.0,
+   "radius_km": 40.0,
+   "bodies": [
+    "mars",
+    "moon"
+   ],
+   "used_by": [
+    "NASA BASALT / FINESSE"
+   ],
+   "use": "volcanic EVA science operations",
+   "source_url": "https://www.nasa.gov/missions/analog-field-testing/what-is-basalt/",
+   "source_title": "What is BASALT?"
+  },
+  {
+   "id": "hi-seas-habitat-mauna-loa",
+   "name": "HI-SEAS habitat, Mauna Loa",
+   "country": "USA",
+   "lat": 19.6,
+   "lon": -155.5,
+   "extent_km": 2.0,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA HRP / Univ. Hawaii (HI-SEAS)"
+   ],
+   "use": "long-duration isolation habitat",
+   "source_url": "https://www.nasa.gov/feature/hi-seas-team-completes-8-month-isolation-mission",
+   "source_title": "HI-SEAS Team Completes 8-Month Isolation Mission"
+  },
+  {
+   "id": "kilauea-lava-fields-hawaii",
+   "name": "Kilauea lava fields, Hawaii",
+   "country": "USA",
+   "lat": 19.4,
+   "lon": -155.3,
+   "extent_km": 15.0,
+   "radius_km": 15.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA BASALT"
+   ],
+   "use": "early-Mars EVA simulation",
+   "source_url": "https://www.nasa.gov/missions/analog-field-testing/what-is-basalt/",
+   "source_title": "What is BASALT?"
+  },
+  {
+   "id": "haleakala-maui",
+   "name": "Haleakala, Maui",
+   "country": "USA",
+   "lat": 20.71,
+   "lon": -156.25,
+   "extent_km": 10.0,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "peer-reviewed (Bishop et al. 2007)"
+   ],
+   "use": "altered tephra spectral analog",
+   "source_url": "https://www.cambridge.org/core/journals/clays-and-clay-minerals/article/characterization-of-alteration-products-in-tephra-from-haleakala-maui-a-visibleinfrared-spectroscopy-mossbauer-spectroscopy-xrd-empa-and-tem-study/61D70F49EE4352395C9F3E148B8C83EF",
+   "source_title": "Characterization of alteration products in tephra from Haleakala, Maui (Clays and Clay Minerals 55, 2007)"
+  },
+  {
+   "id": "mars-desert-research-station-utah",
+   "name": "Mars Desert Research Station, Utah",
+   "country": "USA",
+   "lat": 38.41,
+   "lon": -110.79,
+   "extent_km": 20.0,
+   "radius_km": 20.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "Mars Society / NASA"
+   ],
+   "use": "crewed Mars simulation, soil science",
+   "source_url": "https://ntrs.nasa.gov/citations/20110014304",
+   "source_title": "Properties of Subsurface Soil Cores from Four Geologic Provinces Surrounding Mars Desert Research Station, Utah"
+  },
+  {
+   "id": "neemo-aquarius-key-largo",
+   "name": "NEEMO Aquarius, Key Largo",
+   "country": "USA",
+   "lat": 25.0,
+   "lon": -80.4,
+   "extent_km": 0.5,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars",
+    "moon"
+   ],
+   "used_by": [
+    "NASA NEEMO"
+   ],
+   "use": "undersea exploration analog missions",
+   "source_url": "https://www.nasa.gov/missions/analog-field-testing/neemo/about-neemo-nasa-extreme-environment-mission-operations/",
+   "source_title": "About NEEMO (NASA Extreme Environment Mission Operations)"
+  },
+  {
+   "id": "bockfjorden-svalbard-amase",
+   "name": "Bockfjorden, Svalbard (AMASE)",
+   "country": "Norway",
+   "lat": 79.4,
+   "lon": 13.3,
+   "extent_km": 10.0,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "AMASE (NASA/ESA)"
+   ],
+   "use": "ExoMars and MSL instrument tests",
+   "source_url": "https://www.esa.int/Space_in_Member_States/Norway/AMASE_2008_-_Til_Mars_paa_Svalbard",
+   "source_title": "AMASE 2008 - Til Mars paa Svalbard"
+  },
+  {
+   "id": "rio-tinto",
+   "name": "Rio Tinto",
+   "country": "Spain",
+   "lat": 37.7,
+   "lon": -6.6,
+   "extent_km": 15.0,
+   "radius_km": 15.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA (MARTE)"
+   ],
+   "use": "subsurface life drilling simulation",
+   "source_url": "https://astrobiology.nasa.gov/news/red-river-drills-for-mars/",
+   "source_title": "Red River Drills for Mars"
+  },
+  {
+   "id": "pilbara",
+   "name": "Pilbara",
+   "country": "Australia",
+   "lat": -21.0,
+   "lon": 119.0,
+   "extent_km": 200.0,
+   "radius_km": 200.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA"
+   ],
+   "use": "early-life stromatolite fossil search",
+   "source_url": "https://ntrs.nasa.gov/citations/20160006681",
+   "source_title": "Searching for Life on Early Mars: Lessons from the Pilbara"
+  },
+  {
+   "id": "holuhraun-lava-field",
+   "name": "Holuhraun lava field",
+   "country": "Iceland",
+   "lat": 64.85,
+   "lon": -16.83,
+   "extent_km": 10.0,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "USGS / Univ. Arizona (RAVEN)"
+   ],
+   "use": "young fissure-lava terrain analog",
+   "source_url": "https://www.usgs.gov/publications/2014-2015-holuhraun-lava-flow-field-iceland-a-planetary-analog-young-volcanic-terrains",
+   "source_title": "The 2014-2015 Holuhraun lava flow-field in Iceland as a planetary analog for young volcanic terrains in Elysium Planitia, Mars"
+  },
+  {
+   "id": "axel-heiberg-island-gypsum-hill",
+   "name": "Axel Heiberg Island (Gypsum Hill)",
+   "country": "Canada",
+   "lat": 79.42,
+   "lon": -90.75,
+   "extent_km": 5.0,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "McGill / CSA (peer-reviewed)"
+   ],
+   "use": "cold hypersaline spring microbiology",
+   "source_url": "https://www.frontiersin.org/articles/10.3389/fmicb.2017.02527",
+   "source_title": "Biological Characterization of Microenvironments in a Hypersaline Cold Spring Mars Analog"
+  },
+  {
+   "id": "ries-crater",
+   "name": "Ries crater",
+   "country": "Germany",
+   "lat": 48.88,
+   "lon": 10.56,
+   "extent_km": 24.0,
+   "radius_km": 24.0,
+   "bodies": [
+    "mars",
+    "moon"
+   ],
+   "used_by": [
+    "ESA PANGAEA / NASA Apollo"
+   ],
+   "use": "astronaut impact-geology training",
+   "source_url": "https://blogs.esa.int/caves/?p=1147",
+   "source_title": "The astronauts are back!"
+  },
+  {
+   "id": "lonar-crater",
+   "name": "Lonar crater",
+   "country": "India",
+   "lat": 19.98,
+   "lon": 76.51,
+   "extent_km": 1.8,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "USGS (Hagerty and Newsom)"
+   ],
+   "use": "basalt impact hydrothermal analog",
+   "source_url": "https://www.usgs.gov/publications/hydrothermal-alteration-lonar-lake-impact-structure-india-implications-impact",
+   "source_title": "Hydrothermal alteration at the Lonar Lake impact structure, India: Implications for impact cratering on Mars"
+  },
+  {
+   "id": "dhofar-amadee-18",
+   "name": "Dhofar (AMADEE-18)",
+   "country": "Oman",
+   "lat": 18.5,
+   "lon": 53.5,
+   "extent_km": 50.0,
+   "radius_km": 50.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "Austrian Space Forum (AMADEE-18)"
+   ],
+   "use": "crewed Mars field simulation",
+   "source_url": "https://oewf.org/en/amadee-18",
+   "source_title": "AMADEE-18 Mars Analog Field Simulation, February 2018, Oman"
+  },
+  {
+   "id": "dalangtan-playa-qaidam-basin",
+   "name": "Dalangtan Playa, Qaidam Basin",
+   "country": "China",
+   "lat": 38.3,
+   "lon": 91.7,
+   "extent_km": 40.0,
+   "radius_km": 40.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "peer-reviewed (Kong et al. 2018)"
+   ],
+   "use": "hyperarid saline playa analog",
+   "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6205091",
+   "source_title": "Dalangtan Saline Playa in a Hyperarid Region on Tibet Plateau: I. Evolution and Environments (Astrobiology 2018)"
+  },
+  {
+   "id": "sudbury",
+   "name": "Sudbury",
+   "country": "Canada",
+   "lat": 46.6,
+   "lon": -81.2,
+   "extent_km": 60.0,
+   "radius_km": 60.0,
+   "bodies": [
+    "moon"
+   ],
+   "used_by": [
+    "CSA / NASA Apollo"
+   ],
+   "use": "Apollo impact-geology training",
+   "source_url": "https://www.asc-csa.gc.ca/eng/multimedia/search/video/19470",
+   "source_title": "From Apollo to Artemis: Astronaut training in Canada's craters"
+  },
+  {
+   "id": "mistastin-lake-crater",
+   "name": "Mistastin Lake crater",
+   "country": "Canada",
+   "lat": 55.88,
+   "lon": -63.3,
+   "extent_km": 28.0,
+   "radius_km": 28.0,
+   "bodies": [
+    "moon"
+   ],
+   "used_by": [
+    "CSA / NASA Artemis"
+   ],
+   "use": "anorthosite lunar geology training",
+   "source_url": "https://www.asc-csa.gc.ca/eng/multimedia/search/video/19470",
+   "source_title": "From Apollo to Artemis: Astronaut training in Canada's craters"
+  },
+  {
+   "id": "lanzarote-canary-islands",
+   "name": "Lanzarote, Canary Islands",
+   "country": "Spain",
+   "lat": 29.0,
+   "lon": -13.6,
+   "extent_km": 30.0,
+   "radius_km": 30.0,
+   "bodies": [
+    "mars",
+    "moon"
+   ],
+   "used_by": [
+    "ESA PANGAEA"
+   ],
+   "use": "astronaut field-geology training",
+   "source_url": "https://www.esa.int/ESA_Multimedia/Images/2021/03/Geological_training_in_terrestrial_Moon_and_Mars_analogue_environments",
+   "source_title": "Geological training in terrestrial Moon and Mars analogue environments"
+  },
+  {
+   "id": "dallol-danakil-depression",
+   "name": "Dallol, Danakil Depression",
+   "country": "Ethiopia",
+   "lat": 14.24,
+   "lon": 40.3,
+   "extent_km": 5.0,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "Europlanet 2020 RI"
+   ],
+   "use": "hydrothermal extremophile field analog",
+   "source_url": "https://www.europlanet.org/?p=5790",
+   "source_title": "Ultra-small microbes exhibit extreme survival skills in Ethiopia's Mars-like wonderland"
+  },
+  {
+   "id": "arkaroola-flinders-ranges",
+   "name": "Arkaroola, Flinders Ranges",
+   "country": "Australia",
+   "lat": -30.3,
+   "lon": 139.3,
+   "extent_km": 30.0,
+   "radius_km": 30.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "Mars Society Australia"
+   ],
+   "use": "analogue research facility site",
+   "source_url": "https://cambridge.org/core/journals/symposium-international-astronomical-union/article/using-an-australian-mars-analogue-research-facility-for-astrobiology-education-and-outreach/AC7A2886632E2F728206A1CF51A356F3",
+   "source_title": "Using an Australian Mars Analogue Research Facility for Astrobiology, Education and Outreach"
+  },
+  {
+   "id": "badwater-death-valley",
+   "name": "Badwater, Death Valley",
+   "country": "USA",
+   "lat": 36.2,
+   "lon": -116.8,
+   "extent_km": 10.0,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA"
+   ],
+   "use": "Gale Crater closed-basin analog",
+   "source_url": "https://science.nasa.gov/earth/earth-observatory/mars-rover-curiosity-on-a-familiar-landscape-78860",
+   "source_title": "Mars Rover Curiosity on a Familiar Landscape"
+  },
+  {
+   "id": "beacon-valley-antarctica",
+   "name": "Beacon Valley, Antarctica",
+   "country": "Antarctica",
+   "lat": -77.83,
+   "lon": 160.67,
+   "extent_km": 10.0,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA (Phoenix analog study)"
+   ],
+   "use": "dry permafrost, ground ice",
+   "source_url": "https://ntrs.nasa.gov/api/citations/20100003844/downloads/20100003844.pdf",
+   "source_title": "McMurdo Dry Valleys, Antarctica - A Mars Phoenix Mission Analog"
+  },
+  {
+   "id": "ka-u-desert-hawaii",
+   "name": "Ka'u Desert, Hawaii",
+   "country": "USA",
+   "lat": 19.35,
+   "lon": -155.35,
+   "extent_km": 15.0,
+   "radius_km": 15.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "USGS / JGR Planets"
+   ],
+   "use": "silica coatings, orbital mimic",
+   "source_url": "https://www.usgs.gov/publications/silica-a-mars-analog-environment-ka-u-desert-kilauea-volcano-hawaii",
+   "source_title": "Silica in a Mars analog environment: Ka'u Desert, Kilauea Volcano, Hawaii"
+  },
+  {
+   "id": "lake-lucero-white-sands",
+   "name": "Lake Lucero, White Sands",
+   "country": "USA",
+   "lat": 32.9,
+   "lon": -106.4,
+   "extent_km": 10.0,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA Astrobiology Institute"
+   ],
+   "use": "gypsum sulfate-deposit analog",
+   "source_url": "https://astrobiology.nasa.gov/nai/annual-reports/2007/iptai/saline-lakes-and-gypsum-dunes-in-the-rio-grande-rift-system-as-analogues-for-sulfate-deposits-on-mars/index.html",
+   "source_title": "Saline Lakes and Gypsum Dunes in the Rio Grande Rift System as Analogues for Sulfate Deposits on Mars"
+  },
+  {
+   "id": "shark-bay-hamelin-pool",
+   "name": "Shark Bay, Hamelin Pool",
+   "country": "Australia",
+   "lat": -26.0,
+   "lon": 113.5,
+   "extent_km": 50.0,
+   "radius_km": 50.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA Astrobiology Program"
+   ],
+   "use": "stromatolite biosignatures for Mars",
+   "source_url": "https://astrobiology.nasa.gov/news/bacteria-could-aid-search-for-creatures-on-other-planets/",
+   "source_title": "Bacteria Could Aid Search for Creatures On Other Planets"
+  },
+  {
+   "id": "mono-lake",
+   "name": "Mono Lake",
+   "country": "USA",
+   "lat": 38.0,
+   "lon": -119.0,
+   "extent_km": 15.0,
+   "radius_km": 15.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA/JPL (AMASE, MAX-C)"
+   ],
+   "use": "sample-return drilling field test",
+   "source_url": "https://ntrs.nasa.gov/citations/20110008468",
+   "source_title": "Mono Lake Analog Mars Sample Return Expedition for AMASE"
+  },
+  {
+   "id": "mauna-ulu-hawaii",
+   "name": "Mauna Ulu, Hawaii",
+   "country": "USA",
+   "lat": 19.36,
+   "lon": -155.21,
+   "extent_km": 3.0,
+   "radius_km": 10.0,
+   "bodies": [
+    "mars"
+   ],
+   "used_by": [
+    "NASA BASALT"
+   ],
+   "use": "early-Mars EVA simulation",
+   "source_url": "https://www.nasa.gov/missions/analog-field-testing/what-is-basalt/",
+   "source_title": "What is BASALT?"
+  }
+ ]
+}

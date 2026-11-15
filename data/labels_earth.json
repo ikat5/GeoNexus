@@ -1,1 +1,177 @@
-[["Atacama Desert (Yungay)",-24.08,-69.92,120,"Analog site"],["Devon Island (Haughton Crater)",75.38,-89.68,23,"Analog site"],["Mauna Loa",19.475,-155.608,60,"Analog site"],["McMurdo Dry Valleys (Wright Valley)",-77.52,161.85,70,"Analog site"],["Meteor Crater",35.027,-111.022,1.2,"Analog site"],["Utah MDRS (Hanksville)",38.406,-110.792,20,"Analog site"],["Holuhraun lava field",64.85,-16.83,85,"Analog site"],["Svalbard (Bockfjord volcanoes)",79.43,13.33,15,"Analog site"],["Rio Tinto",37.72,-6.56,30,"Analog site"],["Pilbara (Dresser Formation)",-21.15,119.42,40,"Analog site"],["Mojave Desert",35,-115.5,300,"Analog site"],["Qaidam Basin",37,95,300,"Analog site"],["Craters of the Moon",43.42,-113.52,40,"Analog site"],["SP Crater",35.58,-111.63,0.4,"Analog site"],["Lonar Crater",19.976,76.508,1.8,"Impact crater"],["Ries Crater",48.88,10.56,24,"Impact crater"],["Vredefort Crater",-27,27.5,300,"Impact crater"],["Chicxulub Crater",21.4,-89.52,180,"Impact crater"],["Sudbury Basin",46.6,-81.18,130,"Impact crater"],["Manicouagan Crater",51.38,-68.7,100,"Impact crater"],["Kamil Crater",22.018,26.088,0.045,"Impact crater"],["Wolfe Creek Crater",-19.17,127.8,0.88,"Impact crater"],["Richat Structure",21.12,-11.4,40,"Geologic structure"],["Kilauea",19.421,-155.287,15,"Volcano"],["Haleakalā",20.71,-156.25,30,"Volcano"],["Teide",28.272,-16.642,15,"Volcano"],["Dallol",14.24,40.3,3,"Volcano"],["Mount Everest",27.988,86.925,20,"Mountain"],["Kilimanjaro",-3.068,37.356,40,"Mountain"],["Aconcagua",-32.653,-70.011,20,"Mountain"],["Denali",63.069,-151.007,20,"Mountain"],["Mont Blanc",45.833,6.865,15,"Mountain"],["Grand Canyon",36.107,-112.113,400,"Canyon"],["Death Valley",36.505,-117.079,200,"Desert"],["Namib Desert",-24.75,15.3,500,"Desert"],["Sahara",23.4,13,3000,"Desert"],["Altiplano",-17,-68,500,"Plateau"],["Lake Vostok",-77.5,106,250,"Subglacial lake"],["Bonneville Salt Flats",40.76,-113.89,40,"Salt flat"]]
+[
+ [
+  "Lonar Crater",
+  19.976,
+  76.508,
+  1.8,
+  "Impact crater"
+ ],
+ [
+  "Ries Crater",
+  48.88,
+  10.56,
+  24,
+  "Impact crater"
+ ],
+ [
+  "Vredefort Crater",
+  -27,
+  27.5,
+  300,
+  "Impact crater"
+ ],
+ [
+  "Chicxulub Crater",
+  21.4,
+  -89.52,
+  180,
+  "Impact crater"
+ ],
+ [
+  "Sudbury Basin",
+  46.6,
+  -81.18,
+  130,
+  "Impact crater"
+ ],
+ [
+  "Manicouagan Crater",
+  51.38,
+  -68.7,
+  100,
+  "Impact crater"
+ ],
+ [
+  "Kamil Crater",
+  22.018,
+  26.088,
+  0.045,
+  "Impact crater"
+ ],
+ [
+  "Wolfe Creek Crater",
+  -19.17,
+  127.8,
+  0.88,
+  "Impact crater"
+ ],
+ [
+  "Richat Structure",
+  21.12,
+  -11.4,
+  40,
+  "Geologic structure"
+ ],
+ [
+  "Kilauea",
+  19.421,
+  -155.287,
+  15,
+  "Volcano"
+ ],
+ [
+  "Haleakalā",
+  20.71,
+  -156.25,
+  30,
+  "Volcano"
+ ],
+ [
+  "Teide",
+  28.272,
+  -16.642,
+  15,
+  "Volcano"
+ ],
+ [
+  "Dallol",
+  14.24,
+  40.3,
+  3,
+  "Volcano"
+ ],
+ [
+  "Mount Everest",
+  27.988,
+  86.925,
+  20,
+  "Mountain"
+ ],
+ [
+  "Kilimanjaro",
+  -3.068,
+  37.356,
+  40,
+  "Mountain"
+ ],
+ [
+  "Aconcagua",
+  -32.653,
+  -70.011,
+  20,
+  "Mountain"
+ ],
+ [
+  "Denali",
+  63.069,
+  -151.007,
+  20,
+  "Mountain"
+ ],
+ [
+  "Mont Blanc",
+  45.833,
+  6.865,
+  15,
+  "Mountain"
+ ],
+ [
+  "Grand Canyon",
+  36.107,
+  -112.113,
+  400,
+  "Canyon"
+ ],
+ [
+  "Death Valley",
+  36.505,
+  -117.079,
+  200,
+  "Desert"
+ ],
+ [
+  "Namib Desert",
+  -24.75,
+  15.3,
+  500,
+  "Desert"
+ ],
+ [
+  "Sahara",
+  23.4,
+  13,
+  3000,
+  "Desert"
+ ],
+ [
+  "Altiplano",
+  -17,
+  -68,
+  500,
+  "Plateau"
+ ],
+ [
+  "Lake Vostok",
+  -77.5,
+  106,
+  250,
+  "Subglacial lake"
+ ],
+ [
+  "Bonneville Salt Flats",
+  40.76,
+  -113.89,
+  40,
+  "Salt flat"
+ ]
+]

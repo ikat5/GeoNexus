@@ -168,12 +168,13 @@ export function Candidates() {
               <span className="sc mono"><Num value={k.terrain_fit} /><small>fit</small></span>
               <span className="sc mono">{k.learned_similarity == null ? '—' : num(k.learned_similarity, 2)}<small>shape</small></span>
             </button>
-            <span className="tags"><Badge r={r} i={i} />{k.near_analog && <i className="tag">near {k.near_analog} (NASA analog)</i>}</span>
+            <span className="tags"><Badge r={r} i={i} />{k.novelty && <i className={`tag nov ${k.novelty.class}`} title={k.novelty.nearest_known ? `${k.novelty.nearest_known.distance_km} km from ${k.novelty.nearest_known.name}` : undefined}>{k.novelty.class === 'known' ? 'Known analog site' : k.novelty.class === 'near_known' ? 'Near a known site' : 'New candidate'}</i>}{k.near_analog && <i className="tag">near {k.near_analog} (NASA analog)</i>}</span>
           </li>
         ))}
       </ol>
       <button className="btn earth wide" onClick={() => { driveTo(r.pick); go('drive'); }}>Drive to {shortEarth(r.resolved[r.pick]).split(',')[0]}</button>
       <p className="note">{screen}</p>
+      <a className="btn ghost wide" href="/discoveries">See all discoveries</a>
     </Panel>
   );
 }

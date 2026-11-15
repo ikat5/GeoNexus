@@ -2,11 +2,13 @@
 The landing page snaps a click to the nearest of these sites (labelled "preview"); the full model runs in /sim.
   .venv/bin/python scripts/hero_twins.py           -> data/hero_twins.json   (Earth names from OpenStreetMap Nominatim)
   .venv/bin/python scripts/hero_twins.py --names   re-runs only the Nominatim naming on the existing file"""
-import json, sys, time, urllib.request
+import json, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / 'scripts'))
+from geo import place  # noqa: E402
 
 SITES = [  # USGS Gazetteer names and centres (data/labels_mars.json); rover sites use their landing coordinates
     ('Gale Crater', -4.59, 137.44), ('Jezero Crater', 18.41, 77.69), ('Olympus Mons', 18.65, -133.80),
@@ -17,22 +19,6 @@ SITES = [  # USGS Gazetteer names and centres (data/labels_mars.json); rover sit
     ('Isidis Planitia', 13.94, 88.38), ('Noctis Labyrinthus', -6.36, -101.19), ('Avernus Colles', -1.73, 171.02),
     ('Phoenix landing site', 68.22, -125.75), ('Planum Boreum', 87.32, 54.96),
 ]
-
-
-def place(lat, lon):
-    """Region and country in English ("Fars Province, Iran"): district names are often only in local script."""
-    url = f'https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=6&addressdetails=1&accept-language=en&lat={lat:.5f}&lon={lon:.5f}'
-    req = urllib.request.Request(url, headers={'User-Agent': 'GeoNexus-build/1.0', 'Accept-Language': 'en'})
-    try:
-        with urllib.request.urlopen(req, timeout=15) as r:
-            a = json.load(r).get('address', {})
-        parts = [a.get('state') or a.get('region') or a.get('province') or a.get('county'), a.get('country')]
-        return ', '.join(x for x in parts if x) or None
-    except Exception as e:  # offline: coordinates only
-        print('  nominatim:', e)
-        return None
-    finally:
-        time.sleep(1.1)  # Nominatim policy: at most one request per second
 
 
 if '--names' in sys.argv:

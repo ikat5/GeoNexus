@@ -1,6 +1,7 @@
 // node tests/selfcheck.mjs — estimator, NASA DEM sampler, live-weather atmosphere and similarity checks.
 import assert from 'node:assert/strict';
 import { readPng } from '../scripts/png.mjs';
+import { readFileSync } from 'node:fs';
 import { WORLDS, liveEarthAtmosphere } from '../js/physics.js';
 import { Rover } from '../js/rover.js';
 import { NasaDemSampler } from '../js/dem_sampler.js';
@@ -121,3 +122,16 @@ for (const s of [moon, mars]) {
 }
 
 console.log('selfcheck ok');
+
+// Discovery Atlas data: the schema the /discoveries page reads, and every known site carries a source
+{
+  const d = JSON.parse(readFileSync(new URL('../data/discoveries.json', import.meta.url))), k = JSON.parse(readFileSync(new URL('../data/known_analogs.json', import.meta.url)));
+  assert.ok(k.sites.length >= 30 && k.sites.every((s) => /^https?:\/\//.test(s.source_url) && s.source_title && s.radius_km >= 10), 'known analog sites sourced');
+  assert.ok(d.n_queries > 0 && d.validation && Array.isArray(d.clusters) && d.clusters.length > 0, 'discoveries header');
+  const CLS = new Set(['known', 'near_known', 'new', 'published_elsewhere']);
+  for (const c of d.clusters) {
+    assert.ok(CLS.has(c.class) && Number.isFinite(c.lat) && Number.isFinite(c.lon) && c.twin_count === c.twins.length || c.twins.length === 40, `cluster ${c.id}`);
+    assert.ok(c.twins.every((t) => ['mars', 'moon'].includes(t.body) && Number.isFinite(t.final_score)), `twins ${c.id}`);
+  }
+}
+console.log('atlas data ok');

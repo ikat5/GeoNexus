@@ -54,13 +54,16 @@ const onEvent = (world: string) => (type: string, detail: unknown) => {
   if (type === 'stall') toast.warning(`${worldName(world)} rover stalled · recovering`, { id: `stall-${world}`, description: 'Wheels below 0.3 m/s for 3 s; it turns around and replans.' });
 };
 
-let started = false;
+let started = false, pendingEarth: [number, number] | null = null;
 export async function init() {
   if (started) return;
   started = true;
   // /sim?pin=lat,lon (the landing page's "Launch" button): pin that site and run the real model on it. Read before
   // setBody() rewrites the URL.
   const pin = new URLSearchParams(location.search).get('pin')?.split(',').map(Number);
+  // ?earth=lat,lon (the atlas's "Drive it"): the Earth rover goes to that discovery instead of match 1
+  const ep = new URLSearchParams(location.search).get('earth')?.split(',').map(Number);
+  if (ep?.length === 2 && Math.abs(ep[0]) <= 90 && Math.abs(ep[1]) <= 180) pendingEarth = [ep[0], ep[1]];
   addEventListener('popstate', () => { const b = worldOf(); if (b !== S.body) setBody(b); else route(); });
   route();
   try {
@@ -141,7 +144,8 @@ async function runModel(b: Body, lat: number, lon: number, place: Promise<string
     const c0 = data.candidates[0];
     if (c0) {
       r.names[0].then((n) => { if (S.results[b] === r) toast.success(`Twin found · ${shortEarth(n)}`, { id: 'twin', description: `Terrain fit ${Math.round(c0.terrain_fit)}/100 · ${c0.landform} · ${data.candidates.length} matches` }); });
-      if (b === S.body) driveTo(0);
+      if (b === S.body && pendingEarth) { const [la, lo] = pendingEarth; pendingEarth = null; pinEarth(la, lo); }
+      else if (b === S.body) driveTo(0);
     } else toast.warning('No Earth twin for this site', { id: 'twin', description: 'No Earth cell passed the terrain screen.' });
     emit();
   } catch (e) {

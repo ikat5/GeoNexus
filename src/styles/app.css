@@ -484,6 +484,7 @@ kbd { display: inline-flex; align-items: center; gap: 2px; padding: 1px 6px; bor
 .conf[data-k='medium'] { color: var(--warn); border-color: rgba(255, 194, 77, .45); }
 .conf[data-k='low'] { color: #FFA9AB; border-color: rgba(255, 90, 95, .45); }
 .tag { color: var(--muted-ink); border-color: var(--line-2); }
+.tag.nov.new { color: #FFD3BF; border-color: rgba(255, 122, 69, .6); } .tag.nov.known { color: #BDEFF7; border-color: rgba(120, 215, 230, .6); } .tag.nov.near_known { color: var(--warn); border-color: rgba(255, 194, 77, .5); }
 
 /* empty */
 .empty { display: grid; justify-items: center; gap: 12px; max-width: 520px; padding: 36px; text-align: center; }
